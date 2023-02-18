@@ -57,18 +57,34 @@ void ArmSubsystem::ManualGrabber() {
 
 /* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::PrintToDashboard() {
-  UpdateValues();
   frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
   frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
   frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
 }
 
-void ArmSubsystem::StartCompressor() {
-  armCompressor.Disable();
-  armCompressor.EnableDigital();
+frc2::CommandPtr ArmSubsystem::StartCompressor() {
+  return this->RunOnce(
+    [this] { armCompressor.Disable();
+             armCompressor.EnableDigital(); });
 }
-void ArmSubsystem::StopCompressor() {
-  armCompressor.Disable();
+frc2::CommandPtr ArmSubsystem::StopCompressor() {
+  return this->RunOnce(
+    [this] {armCompressor.Disable(); });
+}
+
+void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
+  SubsystemBase::InitSendable(builder);
+  // builder.AddBooleanProperty(
+  //   "",
+
+  // )
+}
+/*
+ * @desc Runs periodically (20_ms), should not interfere
+ * with whatever command requires the subsystem
+ */
+void ArmSubsystem::Periodic() {
+  UpdateValues();
 }
 /* ---===########################################===--- */
 

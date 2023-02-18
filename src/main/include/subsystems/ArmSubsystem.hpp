@@ -6,6 +6,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/Solenoid.h>
 #include <frc/Compressor.h>
+#include <wpi/sendable/SendableBuilder.h>
 
 #include "Constants.hpp"
 #include "ctre/Phoenix.h"
@@ -15,12 +16,15 @@ public:
   ArmSubsystem();
   ~ArmSubsystem() = default;
 
+  void Periodic() override;
+  void InitSendable(wpi::SendableBuilder& builder) override;
+
   void ResetEncoders();
   void UpdateValues();
   void PrintToDashboard();
 
-  void StartCompressor();
-  void StopCompressor();
+  frc2::CommandPtr StartCompressor();
+  frc2::CommandPtr StopCompressor();
 
   void ToggleGrabber();
 

@@ -1,13 +1,16 @@
 #pragma once
-
+//User
+#include "RobotContainer.h"
+//cpp
 #include <optional>
-
+//wpi/vendordeps
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
+#include "ctre/Phoenix.h"
 
-#include "RobotContainer.h"
+using namespace frc;
 
-class Robot : public frc::TimedRobot {
+class Robot : public TimedRobot {
  public:
   void RobotInit() override;
   void RobotPeriodic() override;

@@ -10,6 +10,11 @@ RobotContainer::RobotContainer() {
 
   // Configure the button bindings
   ConfigureBindings();
+
+  m_drive.SetDefaultCommand(
+    std::move(
+      m_drive.Drive(driveController.GetLeftY(),driveController.GetRightX())
+    ) );
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -33,16 +38,17 @@ void RobotContainer::ConfigureBindings() {
 
   }
   else if ( Constants::MODE == Constants::Mode::DEBUG ) {
-    RB.Debounce(100_ms).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
-    LB.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
-    RT.WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
-    LT.WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
-    yButton.WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
-    xButton.WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
+    //All make sure opposite condition is false so that arm doesn't
+    //try to move both directions at once
+    (RB && !LB).Debounce(100_ms).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
+    (LB && !RB).WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
+    (RT && !LT).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
+    (LT && !RT).WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
+    (yButton && !xButton).WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
+    (xButton && !yButton).WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
   }
   //No matter the mode
   aButton.OnTrue(m_arm.ToggleGrabber());
-  
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

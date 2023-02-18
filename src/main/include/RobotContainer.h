@@ -6,6 +6,7 @@
 
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
+#include "subsystems/DriveSubsystem.hpp"
 #include "subsystems/ExampleSubsystem.hpp"
 
 /**
@@ -34,6 +35,7 @@ class RobotContainer {
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;
   ArmSubsystem m_arm;
+  DriveSubsystem m_drive;
 
   void ConfigureBindings();
 };

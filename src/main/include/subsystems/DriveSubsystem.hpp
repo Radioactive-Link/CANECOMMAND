@@ -18,6 +18,7 @@ public:
   void InitSendable(wpi::SendableBuilder& builder) override;
 
   frc2::CommandPtr StopDrive();
+  frc2::CommandPtr Drive(double f, double r);
 
 private:
   WPI_TalonSRX m_frontLeft;

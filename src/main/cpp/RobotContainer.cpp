@@ -29,6 +29,16 @@ void RobotContainer::ConfigureBindings() {
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
   // xboxController.B().WhileTrue(m_subsystem.ExampleMethodCommand());
+  if ( Constants::MODE == Constants::Mode::NORMAL ) {
+
+  }
+  else if ( Constants::MODE == Constants::Mode::DEBUG ) {
+    RB.WhileTrue(m_arm.ManualJointUp());
+    LB.WhileTrue(m_arm.ManualJointDown());
+    RT.WhileTrue(m_arm.ManualExtend());
+    LT.WhileTrue(m_arm.ManualRetract());
+  }
+  //No matter the mode
   aButton.OnTrue(m_arm.ToggleGrabber());
   
 }

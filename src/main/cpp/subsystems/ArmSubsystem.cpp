@@ -42,16 +42,31 @@ armCompressor(
 /* ---===########################################===--- */
 
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
-void ArmSubsystem::ManualJoint() {
-  armJoint.Set(Speeds::JOINT_UPWARDS);
+frc2::CommandPtr ArmSubsystem::ManualJointUp() {
+  return this->RunOnce( //TEST: Does this need to be Run
+    [this] {armJoint.Set(Speeds::JOINT_UPWARDS); });
+}
+frc2::CommandPtr ArmSubsystem::ManualJointDown() {
+  return this->RunOnce(
+    [this] {armJoint.Set(Speeds::JOINT_DOWNWARDS); });
 }
 
-void ArmSubsystem::ManualExtension() {
-
+frc2::CommandPtr ArmSubsystem::ManualExtend() {
+  return this->RunOnce(
+    [this] {armExtension.Set(Speeds::EXTEND); });
+}
+frc2::CommandPtr ArmSubsystem::ManualRetract() {
+  return this->RunOnce(
+    [this] {armExtension.Set(Speeds::RETRACT); });
 }
 
-void ArmSubsystem::ManualGrabber() {
-
+frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
+  return this->RunOnce(
+    [this] {armGrabber.Set(Speeds::GRAB_UPWARDS); });
+}
+frc2::CommandPtr ArmSubsystem::ManualGrabberDown() {
+  return this->RunOnce(
+    [this] {armGrabber.Set(Speeds::GRAB_DOWNWARDS); });
 }
 /* ---===########################################===--- */
 

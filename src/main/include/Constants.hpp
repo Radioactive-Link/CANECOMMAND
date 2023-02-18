@@ -80,14 +80,14 @@ enum GrabLimits {
   EXTEND_MIN,
   EXTEND_MAX
 };
-enum Speeds {
-  EXTEND,
-  RETRACT,
-  JOINT_UPWARDS,
-  JOINT_DOWNWARDS,
-  GRAB_UPWARDS,
-  GRAB_DOWNWARDS,
-};
+namespace Speeds {
+  double const EXTEND = 0.8;
+  double const RETRACT = 0.8;
+  double const JOINT_UPWARDS = -0.8;
+  double const JOINT_DOWNWARDS = 0.8;
+  double const GRAB_UPWARDS = 0.5;
+  double const GRAB_DOWNWARDS = -0.5;
+} //namespace Speeds
 } // namespace ArmConstants
 /* --===############################===-- */
 

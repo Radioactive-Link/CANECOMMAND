@@ -29,9 +29,12 @@ public:
   frc2::CommandPtr ToggleGrabber();
 
   //= Debug/Manual Control
-  void ManualJoint();
-  void ManualExtension();
-  void ManualGrabber();
+  frc2::CommandPtr ManualJointUp();
+  frc2::CommandPtr ManualJointDown();
+  frc2::CommandPtr ManualExtend();
+  frc2::CommandPtr ManualRetract();
+  frc2::CommandPtr ManualGrabberUp();
+  frc2::CommandPtr ManualGrabberDown();
 private:
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;

@@ -26,7 +26,7 @@ public:
   frc2::CommandPtr StartCompressor();
   frc2::CommandPtr StopCompressor();
 
-  void ToggleGrabber();
+  frc2::CommandPtr ToggleGrabber();
 
   //= Debug/Manual Control
   void ManualJoint();

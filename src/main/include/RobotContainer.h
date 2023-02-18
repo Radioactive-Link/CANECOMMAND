@@ -21,7 +21,10 @@ class RobotContainer {
   frc2::CommandPtr GetAutonomousCommand();
 
  private:
-  frc2::CommandXboxController xboxController{Constants::Controllers::XBOX_DRIVE};
+  frc2::CommandXboxController driveController{Constants::Controllers::XBOX_DRIVE};
+  frc2::Trigger xButton = driveController.X();
+  frc2::Trigger bButton = driveController.B();
+  frc2::Trigger aButton = driveController.A();
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;
   ArmSubsystem m_arm;

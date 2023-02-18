@@ -100,6 +100,7 @@ void ArmSubsystem::UpdateValues() {
   armExtensionDistance = armExtensionEncoder.GetDistance();
 }
 
-void ArmSubsystem::ToggleGrabber() {
-  armGrabberPiston.Toggle();
+frc2::CommandPtr ArmSubsystem::ToggleGrabber() {
+  return this->RunOnce(
+    [this] {armGrabberPiston.Toggle(); });
 }

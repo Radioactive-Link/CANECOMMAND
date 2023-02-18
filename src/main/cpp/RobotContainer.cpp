@@ -10,7 +10,7 @@ RobotContainer::RobotContainer() {
 
   // Configure the button bindings
   ConfigureBindings();
-
+  // Set default command on the m_drive subsystem
   m_drive.SetDefaultCommand(
     std::move(
       m_drive.Drive(driveController.GetLeftY(),driveController.GetRightX())
@@ -40,6 +40,7 @@ void RobotContainer::ConfigureBindings() {
   else if ( Constants::MODE == Constants::Mode::DEBUG ) {
     //All make sure opposite condition is false so that arm doesn't
     //try to move both directions at once
+    //(main condition, opposite condition)
     (RB && !LB).Debounce(100_ms).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
     (LB && !RB).WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
     (RT && !LT).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());

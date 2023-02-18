@@ -7,11 +7,12 @@
 #include "Constants.hpp"
 #include "ctre/Phoenix.h"
 
-class Arm : public frc2::SubsystemBase {
+class ArmSubsystem : public frc2::SubsystemBase {
 public:
-  Arm();
-  ~Arm() = default;
+  ArmSubsystem();
+  ~ArmSubsystem() = default;
   void ResetEncoders();
+  void UpdateValues();
 private:
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;
@@ -19,4 +20,8 @@ private:
   frc::Encoder armJointEncoder;
   frc::Encoder armGrabberEncoder;
   frc::Encoder armExtensionEncoder;
+
+  int armJointDistance;
+  int armGrabberDistance;
+  int armExtensionDistance;
 };

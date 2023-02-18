@@ -4,7 +4,7 @@
 #include <frc2/command/button/CommandXboxController.h>
 
 #include "Constants.hpp"
-#include "subsystems/Arm.hpp"
+#include "subsystems/ArmSubsystem.hpp"
 #include "subsystems/ExampleSubsystem.hpp"
 
 /**
@@ -24,7 +24,7 @@ class RobotContainer {
   frc2::CommandXboxController xboxController{Constants::Controllers::XBOX_DRIVE};
   // The robot's subsystems are defined here...
   ExampleSubsystem m_subsystem;
-  Arm m_arm;
+  ArmSubsystem m_arm;
 
   void ConfigureBindings();
 };

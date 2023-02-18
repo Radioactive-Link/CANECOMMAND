@@ -1,8 +1,6 @@
-#include "subsystems/Arm.hpp"
+#include "subsystems/ArmSubsystem.hpp"
 
-#include <frc/Encoder.h>
-
-Arm::Arm() 
+ArmSubsystem::ArmSubsystem() 
 :
 armJoint(Constants::MotorControllers::JOINT),
 armGrabber(Constants::MotorControllers::GRABBER),
@@ -29,8 +27,14 @@ armExtensionEncoder(
   ResetEncoders();
 }
 
-void Arm::ResetEncoders() {
+void ArmSubsystem::ResetEncoders() {
   armJointEncoder.Reset();
   armGrabberEncoder.Reset();
   armExtensionEncoder.Reset();
+}
+
+void ArmSubsystem::UpdateValues() {
+  armJointDistance = armJointEncoder.GetDistance();
+  armGrabberDistance = armGrabberEncoder.GetDistance();
+  armExtensionDistance = armExtensionEncoder.GetDistance();
 }

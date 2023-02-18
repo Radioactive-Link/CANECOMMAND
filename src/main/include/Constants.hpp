@@ -20,7 +20,7 @@ enum class Mode {
 };
 //Pick mode here
 //constexpr to avoid "multiple definition of MODE"
-//^ (basically) means MODE will evaluate by compile time
+//const works too
 Mode constexpr MODE = Mode::NORMAL;
 
 enum Controllers {
@@ -31,6 +31,28 @@ enum Solenoids {
   ARM_PISTON
 };
 int const COMPRESSOR = 0;
+
+enum MotorControllers {
+  //= Drive
+  BACK_LEFT   = 13,
+  FRONT_LEFT,
+  BACK_RIGHT  = 1,
+  FRONT_RIGHT,
+  //= ARM
+  EXTENSION   = 7,
+  GRABBER     = 0,
+  JOINT       = 45
+};
+
+enum Encoders {
+  JOINT_A,
+  JOINT_B,
+  GRABBER_A,
+  GRABBER_B,
+  EXTENSION_A,
+  EXTENSION_B
+};
+
 /* --===############################===-- */
 
 /* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 

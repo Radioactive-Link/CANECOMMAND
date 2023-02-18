@@ -1,35 +1,38 @@
 #include "subsystems/ArmSubsystem.hpp"
 
+using namespace Constants;
+using namespace Constants::ArmConstants;
+
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 ArmSubsystem::ArmSubsystem() 
 :
-armJoint(Constants::MotorControllers::JOINT),
-armGrabber(Constants::MotorControllers::GRABBER),
-armExtension(Constants::MotorControllers::EXTENSION),
+armJoint(MotorControllers::JOINT),
+armGrabber(MotorControllers::GRABBER),
+armExtension(MotorControllers::EXTENSION),
 armJointEncoder(
-  Constants::Encoders::JOINT_A,
-  Constants::Encoders::JOINT_B,
+  Encoders::JOINT_A,
+  Encoders::JOINT_B,
   false,
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberEncoder(
-  Constants::Encoders::JOINT_A,
-  Constants::Encoders::JOINT_B,
+  Encoders::JOINT_A,
+  Encoders::JOINT_B,
   false,
   frc::Encoder::EncodingType::k4X
 ),
 armExtensionEncoder(
-  Constants::Encoders::JOINT_A,
-  Constants::Encoders::JOINT_B,
+  Encoders::JOINT_A,
+  Encoders::JOINT_B,
   false,
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
-  Constants::Solenoids::ARM_PISTON
+  Solenoids::ARM_PISTON
 ),
 armCompressor(
-  Constants::COMPRESSOR,
+  COMPRESSOR,
   frc::PneumaticsModuleType::CTREPCM
 )
 { //Constructor Body
@@ -38,10 +41,9 @@ armCompressor(
 }
 /* ---===########################################===--- */
 
-
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::ManualJoint() {
-  armJoint.Set(Constants::ArmConstants::Speeds::JOINT_UPWARDS);
+  armJoint.Set(Speeds::JOINT_UPWARDS);
 }
 
 void ArmSubsystem::ManualExtension() {
@@ -50,6 +52,23 @@ void ArmSubsystem::ManualExtension() {
 
 void ArmSubsystem::ManualGrabber() {
 
+}
+/* ---===########################################===--- */
+
+/* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+void ArmSubsystem::PrintToDashboard() {
+  UpdateValues();
+  frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
+  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
+  frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
+}
+
+void ArmSubsystem::StartCompressor() {
+  armCompressor.Disable();
+  armCompressor.EnableDigital();
+}
+void ArmSubsystem::StopCompressor() {
+  armCompressor.Disable();
 }
 /* ---===########################################===--- */
 
@@ -68,20 +87,3 @@ void ArmSubsystem::UpdateValues() {
 void ArmSubsystem::ToggleGrabber() {
   armGrabberPiston.Toggle();
 }
-
-/* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-void ArmSubsystem::PrintToDashboard() {
-  UpdateValues();
-  frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
-  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
-  frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
-}
-
-void ArmSubsystem::StartCompressor() {
-  armCompressor.Disable();
-  armCompressor.EnableDigital();
-}
-void ArmSubsystem::StopCompressor() {
-  armCompressor.Disable();
-}
-/* ---===########################################===--- */

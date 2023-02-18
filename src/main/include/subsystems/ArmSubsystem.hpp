@@ -18,7 +18,7 @@ public:
   void ResetEncoders();
   void UpdateValues();
   void PrintToDashboard();
-  
+
   void StartCompressor();
   void StopCompressor();
 
@@ -37,6 +37,7 @@ private:
   frc::Encoder armExtensionEncoder;
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
+
   int armJointDistance;
   int armGrabberDistance;
   int armExtensionDistance;

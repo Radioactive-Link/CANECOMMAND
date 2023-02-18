@@ -20,8 +20,9 @@ enum class Mode {
 };
 //Pick mode here
 //constexpr to avoid "multiple definition of MODE"
-//const works too
 Mode constexpr MODE = Mode::NORMAL;
+
+int const COMPRESSOR = 0;
 
 enum Controllers {
   XBOX_DRIVE,
@@ -30,7 +31,6 @@ enum Controllers {
 enum Solenoids {
   ARM_PISTON
 };
-int const COMPRESSOR = 0;
 
 enum MotorControllers {
   //= Drive
@@ -95,9 +95,8 @@ namespace DriveConstants {
 namespace Speeds {
   double const TELOP = 1.0;
   double const AUTO = 1.0;
-  //...
-};
+} // namespace Speeds
 } // namespace DriveConstants
 /* --===############################===-- */
 
-}  // namespace OperatorConstants
+}  // namespace Constants

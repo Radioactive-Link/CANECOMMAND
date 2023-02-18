@@ -39,7 +39,7 @@ armCompressor(
   ResetEncoders();
   StartCompressor();
 }
-/* ---===########################################===--- */
+/* ---===#########################################===--- */
 
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 frc2::CommandPtr ArmSubsystem::ManualJointUp() {
@@ -68,7 +68,7 @@ frc2::CommandPtr ArmSubsystem::ManualGrabberDown() {
   return this->RunOnce(
     [this] {armGrabber.Set(Speeds::GRAB_DOWNWARDS); });
 }
-/* ---===########################################===--- */
+/* ---===#########################################===--- */
 
 /* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::PrintToDashboard() {
@@ -79,8 +79,8 @@ void ArmSubsystem::PrintToDashboard() {
 
 frc2::CommandPtr ArmSubsystem::StartCompressor() {
   return this->RunOnce(
-    [this] { armCompressor.Disable();
-             armCompressor.EnableDigital(); });
+    [this] {armCompressor.Disable();
+            armCompressor.EnableDigital(); });
 }
 frc2::CommandPtr ArmSubsystem::StopCompressor() {
   return this->RunOnce(
@@ -101,7 +101,7 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 void ArmSubsystem::Periodic() {
   UpdateValues();
 }
-/* ---===########################################===--- */
+/* ---===#########################################===--- */
 
 void ArmSubsystem::ResetEncoders() {
   armJointEncoder.Reset();
@@ -141,4 +141,4 @@ frc2::CommandPtr ArmSubsystem::ResetGrabberPiston() {
   return this->RunOnce(
     [this] {armGrabberPiston.Set(false); });
 }
-/* ---===########################################===--- */
+/* ---===#########################################===--- */

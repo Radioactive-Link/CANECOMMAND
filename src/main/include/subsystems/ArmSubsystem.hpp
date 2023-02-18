@@ -1,15 +1,15 @@
 #pragma once
 
-#include <frc2/command/CommandPtr.h>
-#include <frc2/command/SubsystemBase.h>
 #include <frc/Encoder.h>
-#include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/Solenoid.h>
 #include <frc/Compressor.h>
+#include <frc2/command/CommandPtr.h>
+#include <frc2/command/SubsystemBase.h>
 #include <wpi/sendable/SendableBuilder.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "ctre/Phoenix.h"
 
 #include "Constants.hpp"
-#include "ctre/Phoenix.h"
 
 class ArmSubsystem : public frc2::SubsystemBase {
 public:
@@ -40,6 +40,7 @@ public:
   frc2::CommandPtr ManualRetract();
   frc2::CommandPtr ManualGrabberUp();
   frc2::CommandPtr ManualGrabberDown();
+  
 private:
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;

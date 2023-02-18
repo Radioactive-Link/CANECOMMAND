@@ -80,7 +80,7 @@ enum GrabLimits {
   EXTEND_MIN,
   EXTEND_MAX
 };
-namespace Speeds {
+namespace Speeds { //enums can't have doubles
   double const EXTEND = 0.8;
   double const RETRACT = 0.8;
   double const JOINT_UPWARDS = -0.8;
@@ -92,10 +92,10 @@ namespace Speeds {
 /* --===############################===-- */
 
 namespace DriveConstants {
-enum Speeds {
-  AUTO,
-  TELOP,
-  ROTATE
+namespace Speeds {
+  double const TELOP = 1.0;
+  double const AUTO = 1.0;
+  //...
 };
 } // namespace DriveConstants
 /* --===############################===-- */

@@ -61,7 +61,7 @@ frc2::CommandPtr ArmSubsystem::ManualRetract() {
 }
 
 frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
-  return this->RunOnce(
+  return this->RunOnce( //TEST: Does this need to be Run
     [this] {armGrabber.Set(Speeds::GRAB_UPWARDS); });
 }
 frc2::CommandPtr ArmSubsystem::ManualGrabberDown() {

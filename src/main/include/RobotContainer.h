@@ -2,6 +2,7 @@
 
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <units/time.h>
 
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
@@ -23,8 +24,9 @@ class RobotContainer {
  private:
   frc2::CommandXboxController driveController{Constants::Controllers::XBOX_DRIVE};
   frc2::Trigger xButton = driveController.X();
-  frc2::Trigger bButton = driveController.B();
+  frc2::Trigger yButton = driveController.Y();
   frc2::Trigger aButton = driveController.A();
+  frc2::Trigger bButton = driveController.B();
   frc2::Trigger RB      = driveController.RightBumper();
   frc2::Trigger LB      = driveController.LeftBumper();
   frc2::Trigger RT      = driveController.RightTrigger();

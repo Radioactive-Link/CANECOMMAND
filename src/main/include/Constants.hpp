@@ -11,10 +11,28 @@
  */
 
 namespace Constants {
+/* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~
+ * Stuff not big enough to be own category
+ */ 
+enum class Mode {
+  NORMAL,
+  DEBUG
+};
+//Pick mode here
+//constexpr to avoid "multiple definition of MODE"
+//^ (basically) means MODE will evaluate by compile time
+Mode constexpr MODE = Mode::NORMAL;
+
 enum Controllers {
   XBOX_DRIVE,
   XBOX_ARM
 };
+enum Solenoids {
+  ARM_PISTON
+};
+int const COMPRESSOR = 0;
+/* --===############################===-- */
+
 /* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 
 namespace ArmConstants {
 enum Positions {

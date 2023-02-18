@@ -119,3 +119,26 @@ frc2::CommandPtr ArmSubsystem::ToggleGrabber() {
   return this->RunOnce(
     [this] {armGrabberPiston.Toggle(); });
 }
+
+/* --=#[ INTERRUPTED ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/**
+ * @desc Short commands to run when related commands are
+ * interrupted.
+*/
+frc2::CommandPtr ArmSubsystem::StopJoint() {
+  return this->RunOnce(
+    [this] {armJoint.Set(0.0); });
+}
+frc2::CommandPtr ArmSubsystem::StopGrabber() {
+  return this->RunOnce(
+    [this] {armGrabber.Set(0.0); });
+}
+frc2::CommandPtr ArmSubsystem::StopExtension() {
+  return this->RunOnce(
+    [this] {armExtension.Set(0.0); });
+}
+frc2::CommandPtr ArmSubsystem::ResetGrabberPiston() {
+  return this->RunOnce(
+    [this] {armGrabberPiston.Set(false); });
+}
+/* ---===########################################===--- */

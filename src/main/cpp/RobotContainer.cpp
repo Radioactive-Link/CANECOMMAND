@@ -33,12 +33,12 @@ void RobotContainer::ConfigureBindings() {
 
   }
   else if ( Constants::MODE == Constants::Mode::DEBUG ) {
-    RB.Debounce(100_ms).WhileTrue(m_arm.ManualJointUp());
-    LB.WhileTrue(m_arm.ManualJointDown());
-    RT.WhileTrue(m_arm.ManualExtend());
-    LT.WhileTrue(m_arm.ManualRetract());
-    yButton.WhileTrue(m_arm.ManualGrabberUp());
-    xButton.WhileTrue(m_arm.ManualGrabberDown());
+    RB.Debounce(100_ms).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
+    LB.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
+    RT.WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
+    LT.WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
+    yButton.WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
+    xButton.WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
   }
   //No matter the mode
   aButton.OnTrue(m_arm.ToggleGrabber());

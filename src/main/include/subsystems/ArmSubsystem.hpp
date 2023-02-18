@@ -26,7 +26,12 @@ public:
   frc2::CommandPtr StartCompressor();
   frc2::CommandPtr StopCompressor();
 
+  frc2::CommandPtr StopJoint();
+  frc2::CommandPtr StopGrabber();
+  frc2::CommandPtr StopExtension();
+
   frc2::CommandPtr ToggleGrabber();
+  frc2::CommandPtr ResetGrabberPiston();
 
   //= Debug/Manual Control
   frc2::CommandPtr ManualJointUp();

@@ -12,8 +12,7 @@ void Robot::RobotInit() {}
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  * 
- * NOTE:
- * LINE 19 IS ESSENTIAL, DON'T CALL IT FROM ANYWHERE ELSE 
+ * !LINE 19 IS ESSENTIAL, DON'T CALL IT FROM ANYWHERE ELSE 
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();

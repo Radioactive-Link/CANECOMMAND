@@ -2,7 +2,7 @@
 
 #include <frc2/command/button/Trigger.h>
 
-#include "commands/Autos.hpp"
+#include "commands/AutoCommand.hpp"
 #include "commands/ExampleCommand.hpp"
 
 RobotContainer::RobotContainer() {
@@ -11,25 +11,22 @@ RobotContainer::RobotContainer() {
   // Configure the button bindings
   ConfigureBindings();
   // Set default command on the m_drive subsystem
-  m_drive.SetDefaultCommand(
-    std::move(
-      m_drive.Drive(driveController.GetLeftY(),driveController.GetRightX())
-    ) );
+  m_drive.SetDefaultCommand(std::move(m_drive.Drive(driveController.GetLeftY(),driveController.GetRightX())));
 }
 
 void RobotContainer::ConfigureBindings() {
   // Configure your trigger bindings here
   /**
-   * Template:
+   * *Template:
    * controller.button.condition(subsystem.func())
    * func MUST return a CommandPtr
    * See: for conditions & more info
    * https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
   */
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-  frc2::Trigger([this] {
-    return m_subsystem.ExampleCondition();
-  }).OnTrue(ExampleCommand(&m_subsystem).ToPtr());
+  // frc2::Trigger([this] {
+  //   return m_subsystem.ExampleCondition();
+  // }).OnTrue(ExampleCommand(&m_subsystem).ToPtr());
 
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
@@ -54,5 +51,9 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
-  return autos::ExampleAuto(&m_subsystem);
+  return Auto::BasicAutoCommand(&m_drive);
+}
+
+frc::XboxController* RobotContainer::GetDriveController() {
+  return &driveController;
 }

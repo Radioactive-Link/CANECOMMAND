@@ -6,23 +6,24 @@
 #include "commands/ExampleCommand.hpp"
 
 RobotContainer::RobotContainer() {
-  // Initialize all of your commands and subsystems here
+  //!Initialize all of your commands and subsystems here
 
   // Configure the button bindings
   ConfigureBindings();
-  // Set default command on the m_drive subsystem
+  //*Set default/fallback command on the m_drive subsystem
   m_drive.SetDefaultCommand(std::move(m_drive.Drive(driveController.GetLeftY(),driveController.GetRightX())));
+  m_arm.SetDefaultCommand(std::move(MoveToLimits(&m_arm))); //?.ToPtr()
 }
 
 void RobotContainer::ConfigureBindings() {
-  // Configure your trigger bindings here
+  //!Configure your trigger bindings here
   /**
    * *Template:
    * controller.button.condition(subsystem.func())
    * func MUST return a CommandPtr
    * See: for conditions & more info
    * https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
-  */
+   */
   // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
   // frc2::Trigger([this] {
   //   return m_subsystem.ExampleCondition();
@@ -32,7 +33,11 @@ void RobotContainer::ConfigureBindings() {
   // pressed, cancelling on release.
   // xboxController.B().WhileTrue(m_subsystem.ExampleMethodCommand());
   if ( Constants::MODE == Constants::Mode::NORMAL ) {
-
+    xButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS1));
+    yButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS2));
+    bButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS3));
+    RB.OnTrue(m_arm.SetExtensionLimits(ExtensionPositions::EXTENDED));
+    LB.OnTrue(m_arm.SetExtensionLimits(ExtensionPositions::RETRACTED));
   }
   else if ( Constants::MODE == Constants::Mode::DEBUG ) {
     //All make sure opposite condition is false so that arm doesn't

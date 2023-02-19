@@ -39,6 +39,14 @@ public:
   frc2::CommandPtr SetJointLimits(JointPositions pos);
   frc2::CommandPtr SetExtensionLimits(ExtensionPositions pos);
 
+  //Template incase electrical wants to use a vector motor controller
+  template <class T = WPI_TalonSRX*> void MoveWithinLimits(
+    T motor, int distance, int min, int max, double speedf, double speedb
+  );
+  frc2::CommandPtr MoveJointWithinLimits();
+  frc2::CommandPtr MoveExtensionWithinLimits();
+  frc2::CommandPtr MoveGrabberWithinLimits();
+
   //= Debug/Manual Control
   frc2::CommandPtr ManualJointUp();
   frc2::CommandPtr ManualJointDown();

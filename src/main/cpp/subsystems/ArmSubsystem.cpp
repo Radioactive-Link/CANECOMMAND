@@ -43,7 +43,7 @@ armCompressor(
 
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 frc2::CommandPtr ArmSubsystem::ManualJointUp() {
-  return this->RunOnce( //TEST: Does this need to be Run
+  return this->RunOnce( //?Does this need to be Run or RunOnce
     [this] {armJoint.Set(Speeds::JOINT_UPWARDS); });
 }
 frc2::CommandPtr ArmSubsystem::ManualJointDown() {
@@ -61,7 +61,7 @@ frc2::CommandPtr ArmSubsystem::ManualRetract() {
 }
 
 frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
-  return this->RunOnce( //TEST: Does this need to be Run
+  return this->RunOnce(
     [this] {armGrabber.Set(Speeds::GRAB_UPWARDS); });
 }
 frc2::CommandPtr ArmSubsystem::ManualGrabberDown() {
@@ -100,6 +100,7 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
  */
 void ArmSubsystem::Periodic() {
   UpdateValues();
+  PrintToDashboard();
 }
 /* ---===#########################################===--- */
 
@@ -183,5 +184,38 @@ frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
       }
     }
   );
+}
+
+frc2::CommandPtr ArmSubsystem::MoveJointWithinLimits() {
+  return this->Run(
+    [this] { MoveWithinLimits(
+      &armJoint, armJointDistance,
+      LOWER_JOINT_LIMIT, UPPER_JOINT_LIMIT,
+      Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
+    ); });
+}
+frc2::CommandPtr ArmSubsystem::MoveExtensionWithinLimits() {
+  return this->Run(
+    [this] { MoveWithinLimits(
+      &armExtension, armExtensionDistance,
+      UPPER_EXTENSION_LIMIT, LOWER_EXTENSION_LIMIT,
+      Speeds::EXTEND, Speeds::RETRACT
+    ); });
+}
+frc2::CommandPtr ArmSubsystem::MoveGrabberWithinLimits() {
+  return this->Run(
+    [this] { MoveWithinLimits(
+      &armGrabber, armGrabberDistance,
+      UPPER_GRABBER_LIMIT, LOWER_GRABBER_LIMIT,
+      Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
+    ); });
+}
+
+template <class T> void ArmSubsystem::MoveWithinLimits(T motor, int distance, 
+  int min, int max, double speedf, double speedb)
+{
+  if (min < distance && distance < max) motor->Set(0.0);
+  else if ( min > distance )            motor->Set(speedf);
+  else if ( max < distance )            motor->Set(speedb);
 }
 /* ---===#########################################===--- */

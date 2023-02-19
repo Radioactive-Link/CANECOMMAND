@@ -24,7 +24,9 @@ frc2::CommandPtr Auto::AdvancedAuto(DriveSubsystem* drive, ArmSubsystem* arm) {
    * * EX: Move 3ft back, turn right 90deg, extend arm, close grabber...
    */
   return frc2::cmd::RunOnce(
-    [drive, arm] {}, {drive,arm} //requires drive & arm subsystems
+    [drive, arm] {
+      /* Main Body*/
+    }, {drive,arm} //requires drive & arm subsystems
   ).AndThen([drive, arm] {
     drive->Drive(0.0,0.0);       //TODO: Find a way to Reset arm from any position...
     arm->StopJoint();            //?Maybe put driver in to a manual mode for X #time

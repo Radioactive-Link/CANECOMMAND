@@ -18,11 +18,11 @@ enum class Mode {
   NORMAL,
   DEBUG
 };
-//Pick mode here
+//!Pick mode here
 //constexpr to avoid "multiple definition of MODE"
 Mode constexpr MODE = Mode::NORMAL;
 
-int const COMPRESSOR = 0;
+int constexpr COMPRESSOR = 0;
 
 enum Controllers {
   XBOX_DRIVE,
@@ -57,6 +57,11 @@ enum Encoders {
 
 /* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 
 namespace ArmConstants {
+/**
+ **Enum classes are type-safe, useful for params.
+ **Seen in ArmSubsystem limit-setting functions.
+ *!As such, they can't be used to set int or double values.
+*/
 enum class JointPositions {
   POS1,
   POS2,
@@ -90,22 +95,22 @@ enum ExtensionLimits {
   EXTEND_MAX
 };
 namespace Speeds { //enums can't have doubles
-  double const EXTEND = 0.8;
-  double const RETRACT = 0.8;
-  double const JOINT_UPWARDS = -0.8;
-  double const JOINT_DOWNWARDS = 0.8;
-  double const GRAB_UPWARDS = 0.5;
-  double const GRAB_DOWNWARDS = -0.5;
-} //namespace Speeds
+  double constexpr EXTEND = 0.8;
+  double constexpr RETRACT = 0.8;
+  double constexpr JOINT_UPWARDS = -0.8;
+  double constexpr JOINT_DOWNWARDS = 0.8;
+  double constexpr GRAB_UPWARDS = 0.5;
+  double constexpr GRAB_DOWNWARDS = -0.5;
+} // namespace Speeds
 } // namespace ArmConstants
 /* --===############################===-- */
 
 namespace DriveConstants {
 namespace Speeds {
-  double const TELOP = 1.0;
-  double const AUTO = 1.0;
+  double constexpr TELOP = 1.0;
+  double constexpr AUTO = 1.0;
 } // namespace Speeds
 } // namespace DriveConstants
 /* --===############################===-- */
 
-}  // namespace Constants
+} // namespace Constants

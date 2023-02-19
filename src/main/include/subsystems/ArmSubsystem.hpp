@@ -11,6 +11,9 @@
 
 #include "Constants.hpp"
 
+using namespace Constants;
+using namespace Constants::ArmConstants;
+
 class ArmSubsystem : public frc2::SubsystemBase {
 public:
   ArmSubsystem();
@@ -33,6 +36,9 @@ public:
   frc2::CommandPtr ToggleGrabber();
   frc2::CommandPtr ResetGrabberPiston();
 
+  frc2::CommandPtr SetJointLimits(JointPositions pos);
+  frc2::CommandPtr SetExtensionLimits(ExtensionPositions pos);
+
   //= Debug/Manual Control
   frc2::CommandPtr ManualJointUp();
   frc2::CommandPtr ManualJointDown();
@@ -50,6 +56,13 @@ private:
   frc::Encoder armExtensionEncoder;
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
+
+  int UPPER_JOINT_LIMIT;
+  int LOWER_JOINT_LIMIT;
+  int UPPER_GRABBER_LIMIT;
+  int LOWER_GRABBER_LIMIT;
+  int UPPER_EXTENSION_LIMIT;
+  int LOWER_EXTENSION_LIMIT;
 
   int armJointDistance;
   int armGrabberDistance;

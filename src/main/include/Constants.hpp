@@ -57,7 +57,7 @@ enum Encoders {
 
 /* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 
 namespace ArmConstants {
-enum Positions {
+enum class JointPositions {
   POS1,
   POS2,
   POS3
@@ -70,11 +70,20 @@ enum JointLimits {
   POS3MIN,
   POS3MAX
 };
-enum GrabPositions {
+enum GrabLimits {
+  GRAB_POS1MIN,
+  GRAB_POS1MAX,
+  GRAB_POS2MIN,
+  GRAB_POS2MAX,
+  GRAB_POS3MIN,
+  GRAB_POS3MAX
+};
+
+enum class ExtensionPositions {
   EXTENDED,
   RETRACTED
 };
-enum GrabLimits {
+enum ExtensionLimits {
   RETRACT_MIN,
   RETRACT_MAX,
   EXTEND_MIN,

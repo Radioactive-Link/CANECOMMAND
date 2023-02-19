@@ -142,3 +142,46 @@ frc2::CommandPtr ArmSubsystem::ResetGrabberPiston() {
     [this] {armGrabberPiston.Set(false); });
 }
 /* ---===#########################################===--- */
+
+/* --=#[ LIMITS ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+frc2::CommandPtr ArmSubsystem::SetJointLimits(JointPositions pos) {
+  return this->RunOnce(
+    [this,pos] {
+      switch(pos) {
+      case JointPositions::POS1:
+        LOWER_JOINT_LIMIT = JointLimits::POS1MIN;
+        UPPER_JOINT_LIMIT = JointLimits::POS1MAX;
+        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS1MIN;
+        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS1MAX;
+        break;
+      case JointPositions::POS2:
+        LOWER_JOINT_LIMIT = JointLimits::POS2MIN;
+        UPPER_JOINT_LIMIT = JointLimits::POS2MAX;
+        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS2MIN;
+        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS2MAX;
+        break;
+      case JointPositions::POS3:
+        LOWER_JOINT_LIMIT = JointLimits::POS3MIN;
+        UPPER_JOINT_LIMIT = JointLimits::POS3MAX;
+        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS3MIN;
+        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS3MAX;
+      }
+    }
+  );
+}
+frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
+  return this->RunOnce(
+    [this,pos] {
+      switch(pos) {
+      case ExtensionPositions::EXTENDED:
+        LOWER_EXTENSION_LIMIT = ExtensionLimits::EXTEND_MIN;
+        UPPER_EXTENSION_LIMIT = ExtensionLimits::EXTEND_MAX;
+        break;
+      case ExtensionPositions::RETRACTED:
+        LOWER_EXTENSION_LIMIT = ExtensionLimits::RETRACT_MIN;
+        UPPER_EXTENSION_LIMIT = ExtensionLimits::RETRACT_MAX;
+      }
+    }
+  );
+}
+/* ---===#########################################===--- */

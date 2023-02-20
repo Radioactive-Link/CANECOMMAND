@@ -36,37 +36,44 @@ armCompressor(
   frc::PneumaticsModuleType::CTREPCM
 )
 { //Constructor Body
-  ResetEncoders();
+  StopCompressor();
   StartCompressor();
+  SetJointLimits(JointPositions::POS2);
+  SetExtensionLimits(ExtensionPositions::RETRACTED);
 }
 /* ---===#########################################===--- */
 
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 frc2::CommandPtr ArmSubsystem::ManualJointUp() {
-  return this->RunOnce( //?Does this need to be Run or RunOnce
+  return this->Run(
     [this] {armJoint.Set(Speeds::JOINT_UPWARDS); });
 }
 frc2::CommandPtr ArmSubsystem::ManualJointDown() {
-  return this->RunOnce(
+  return this->Run(
     [this] {armJoint.Set(Speeds::JOINT_DOWNWARDS); });
 }
 
 frc2::CommandPtr ArmSubsystem::ManualExtend() {
-  return this->RunOnce(
+  return this->Run(
     [this] {armExtension.Set(Speeds::EXTEND); });
 }
 frc2::CommandPtr ArmSubsystem::ManualRetract() {
-  return this->RunOnce(
+  return this->Run(
     [this] {armExtension.Set(Speeds::RETRACT); });
 }
 
 frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
-  return this->RunOnce(
+  return this->Run(
     [this] {armGrabber.Set(Speeds::GRAB_UPWARDS); });
 }
 frc2::CommandPtr ArmSubsystem::ManualGrabberDown() {
-  return this->RunOnce(
+  return this->Run(
     [this] {armGrabber.Set(Speeds::GRAB_DOWNWARDS); });
+}
+
+frc2::CommandPtr ArmSubsystem::ToggleGrabber() {
+  return this->RunOnce(
+    [this] {armGrabberPiston.Toggle(); });
 }
 /* ---===#########################################===--- */
 
@@ -77,14 +84,11 @@ void ArmSubsystem::PrintToDashboard() {
   frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
 }
 
-frc2::CommandPtr ArmSubsystem::StartCompressor() {
-  return this->RunOnce(
-    [this] {armCompressor.Disable();
-            armCompressor.EnableDigital(); });
+void ArmSubsystem::StartCompressor() {
+  armCompressor.EnableDigital();
 }
-frc2::CommandPtr ArmSubsystem::StopCompressor() {
-  return this->RunOnce(
-    [this] {armCompressor.Disable(); });
+void ArmSubsystem::StopCompressor() {
+  armCompressor.Disable();
 }
 
 void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
@@ -94,15 +98,15 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
   // )
 }
-/*
- * @desc Runs periodically (20_ms), should not interfere
+
+/**
+ * @desc: Runs periodically (20_ms), should not interfere
  * with whatever command requires the subsystem
  */
 void ArmSubsystem::Periodic() {
   UpdateValues();
   PrintToDashboard();
 }
-/* ---===#########################################===--- */
 
 void ArmSubsystem::ResetEncoders() {
   armJointEncoder.Reset();
@@ -115,17 +119,13 @@ void ArmSubsystem::UpdateValues() {
   armGrabberDistance = armGrabberEncoder.GetDistance();
   armExtensionDistance = armExtensionEncoder.GetDistance();
 }
-
-frc2::CommandPtr ArmSubsystem::ToggleGrabber() {
-  return this->RunOnce(
-    [this] {armGrabberPiston.Toggle(); });
-}
+/* ---===#########################################===--- */
 
 /* --=#[ INTERRUPTED ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /**
- * @desc Short commands to run when related commands are
- * interrupted.
-*/
+ * @desc: Short commands to run when related commands are
+ * interrupted/over.
+ */
 frc2::CommandPtr ArmSubsystem::StopJoint() {
   return this->RunOnce(
     [this] {armJoint.Set(0.0); });
@@ -137,10 +137,6 @@ frc2::CommandPtr ArmSubsystem::StopGrabber() {
 frc2::CommandPtr ArmSubsystem::StopExtension() {
   return this->RunOnce(
     [this] {armExtension.Set(0.0); });
-}
-frc2::CommandPtr ArmSubsystem::ResetGrabberPiston() {
-  return this->RunOnce(
-    [this] {armGrabberPiston.Set(false); });
 }
 /* ---===#########################################===--- */
 
@@ -186,36 +182,44 @@ frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
   );
 }
 
-frc2::CommandPtr ArmSubsystem::MoveJointWithinLimits() {
-  return this->Run(
-    [this] { MoveWithinLimits(
-      &armJoint, armJointDistance,
-      LOWER_JOINT_LIMIT, UPPER_JOINT_LIMIT,
-      Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
-    ); });
+/**
+ * @desc: Provides a commandptr wrapper to keep the arm's components
+ * within their respective limits. 
+ */
+frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
+  return frc2::cmd::Run( [this] {
+    MoveJointWithinLimits();
+    MoveExtensionWithinLimits();
+    MoveGrabberWithinLimits(); });
 }
-frc2::CommandPtr ArmSubsystem::MoveExtensionWithinLimits() {
-  return this->Run(
-    [this] { MoveWithinLimits(
-      &armExtension, armExtensionDistance,
-      UPPER_EXTENSION_LIMIT, LOWER_EXTENSION_LIMIT,
-      Speeds::EXTEND, Speeds::RETRACT
-    ); });
+
+void ArmSubsystem::MoveJointWithinLimits() {
+  MoveWithinLimits(
+    &armJoint, armJointDistance,
+    LOWER_JOINT_LIMIT, UPPER_JOINT_LIMIT,
+    Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
+  );
 }
-frc2::CommandPtr ArmSubsystem::MoveGrabberWithinLimits() {
-  return this->Run(
-    [this] { MoveWithinLimits(
-      &armGrabber, armGrabberDistance,
-      UPPER_GRABBER_LIMIT, LOWER_GRABBER_LIMIT,
-      Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
-    ); });
+void ArmSubsystem::MoveExtensionWithinLimits() {
+  MoveWithinLimits(
+    &armExtension, armExtensionDistance,
+    UPPER_EXTENSION_LIMIT, LOWER_EXTENSION_LIMIT,
+    Speeds::EXTEND, Speeds::RETRACT
+  );
+}
+void ArmSubsystem::MoveGrabberWithinLimits() {
+  MoveWithinLimits(
+    &armGrabber, armGrabberDistance,
+    UPPER_GRABBER_LIMIT, LOWER_GRABBER_LIMIT,
+    Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
+  );
 }
 
 template <class T> void ArmSubsystem::MoveWithinLimits(T motor, int distance, 
   int min, int max, double speedf, double speedb)
 {
   if (min < distance && distance < max) motor->Set(0.0);
-  else if ( min > distance )            motor->Set(speedf);
-  else if ( max < distance )            motor->Set(speedb);
+  else if ( distance < min )            motor->Set(speedf);
+  else if ( distance > max )            motor->Set(speedb);
 }
 /* ---===#########################################===--- */

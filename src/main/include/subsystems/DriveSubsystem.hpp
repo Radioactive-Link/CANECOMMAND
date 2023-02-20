@@ -9,6 +9,9 @@
 
 #include "Constants.hpp"
 
+/**
+ * @desc: Subsystem that handles all driving components.
+ */
 class DriveSubsystem : public frc2::SubsystemBase {
 public:
   DriveSubsystem();
@@ -20,6 +23,9 @@ public:
   frc2::CommandPtr StopDrive();
   frc2::CommandPtr Drive(double f, double r);
 
+  void AutoCorrect();
+  int DetermineNearestDirection();
+
 private:
   WPI_TalonSRX m_frontLeft;
   WPI_TalonSRX m_backLeft;
@@ -28,4 +34,5 @@ private:
   WPI_TalonSRX m_backRight;
   frc::MotorControllerGroup m_right;
   frc::DifferentialDrive m_drive;
+  //TODO: Add gyro variable for navx
 };

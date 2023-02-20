@@ -14,11 +14,11 @@
  */ 
 namespace Auto {
 /**
- * @desc Default Auto that just moves backwards
+ * @desc: Default Auto that just moves backwards
 */
 frc2::CommandPtr BasicAutoCommand(DriveSubsystem* drive);
 /**
- * @desc Advanced Auto that moves and uses the Arm
+ * @desc: Advanced Auto that moves and uses the Arm
 */
-frc2::CommandPtr AdvancedAuto(DriveSubsystem* drive, ArmSubsystem* arm);
+frc2::CommandPtr AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm);
 } // namespace Auto

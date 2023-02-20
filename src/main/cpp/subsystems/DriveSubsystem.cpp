@@ -17,7 +17,7 @@ m_drive(m_left,m_right)
 }
 
 void DriveSubsystem::Periodic() {
-
+  /* Nothing to do */
 }
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
@@ -31,4 +31,24 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
 frc2::CommandPtr DriveSubsystem::Drive(double f, double r) {
   return this->Run(
     [this,f,r] {m_drive.ArcadeDrive(f,r); });
+}
+
+/**
+ * @desc: Rotates the drivetrain to the nearest cardinal direction using navx gyro
+ * Will probably be a toggle as constant correction could have odd behaviours
+ */
+void DriveSubsystem::AutoCorrect() {
+  /**
+   * Here is some pseudocode.
+   */
+  //int angle = DetermineNearestDirection();
+  //double normal = GetController()->GetLeftY();
+  //double correction;
+  //if ( angle > 0 && angle < 45 ) correction = 0.2;
+  //else if... correction = ...;
+  //m_drive.ArcadeDrive(normal,correction);
+}
+
+int DriveSubsystem::DetermineNearestDirection() {
+  return 0;
 }

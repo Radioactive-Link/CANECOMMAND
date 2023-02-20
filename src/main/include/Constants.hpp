@@ -10,8 +10,107 @@
  * they are needed.
  */
 
-namespace OperatorConstants {
+namespace Constants {
+/* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~
+ * Stuff not big enough to be own category
+ */ 
+enum class Mode {
+  NORMAL,
+  DEBUG
+};
+//!Pick mode here
+//constexpr to avoid "multiple definition of MODE"
+Mode constexpr MODE = Mode::NORMAL;
 
-constexpr int kDriverControllerPort = 0;
+int constexpr COMPRESSOR = 0;
 
-}  // namespace OperatorConstants
+enum Controllers {
+  XBOX_DRIVE,
+  XBOX_ARM
+};
+enum Solenoids {
+  ARM_PISTON
+};
+
+enum MotorControllers {
+  //= Drive
+  BACK_LEFT   = 13,
+  FRONT_LEFT,
+  BACK_RIGHT  = 1,
+  FRONT_RIGHT,
+  //= ARM
+  EXTENSION   = 7,
+  GRABBER     = 0,
+  JOINT       = 45
+};
+
+enum Encoders {
+  JOINT_A,
+  JOINT_B,
+  GRABBER_A,
+  GRABBER_B,
+  EXTENSION_A,
+  EXTENSION_B
+};
+
+/* --===############################===-- */
+
+/* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 
+namespace ArmConstants {
+/**
+ **Enum classes are type-safe, useful for params.
+ **Seen in ArmSubsystem limit-setting functions.
+ *!As such, they can't be used to set int or double values.
+*/
+enum class JointPositions {
+  POS1,
+  POS2,
+  POS3
+};
+enum JointLimits {
+  POS1MIN,
+  POS1MAX,
+  POS2MIN,
+  POS2MAX,
+  POS3MIN,
+  POS3MAX
+};
+enum GrabLimits {
+  GRAB_POS1MIN,
+  GRAB_POS1MAX,
+  GRAB_POS2MIN,
+  GRAB_POS2MAX,
+  GRAB_POS3MIN,
+  GRAB_POS3MAX
+};
+
+enum class ExtensionPositions {
+  EXTENDED,
+  RETRACTED
+};
+enum ExtensionLimits {
+  RETRACT_MIN,
+  RETRACT_MAX,
+  EXTEND_MIN,
+  EXTEND_MAX
+};
+namespace Speeds { //enums can't have doubles
+  double constexpr EXTEND = 0.8;
+  double constexpr RETRACT = 0.8;
+  double constexpr JOINT_UPWARDS = -0.8;
+  double constexpr JOINT_DOWNWARDS = 0.8;
+  double constexpr GRAB_UPWARDS = 0.5;
+  double constexpr GRAB_DOWNWARDS = -0.5;
+} // namespace Speeds
+} // namespace ArmConstants
+/* --===############################===-- */
+
+namespace DriveConstants {
+namespace Speeds {
+  double constexpr TELOP = 1.0;
+  double constexpr AUTO = 1.0;
+} // namespace Speeds
+} // namespace DriveConstants
+/* --===############################===-- */
+
+} // namespace Constants

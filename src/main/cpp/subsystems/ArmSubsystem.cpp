@@ -11,21 +11,17 @@ armGrabber(MotorControllers::GRABBER),
 armExtension(MotorControllers::EXTENSION),
 armJointEncoder(
   Encoders::JOINT_A,
-  Encoders::JOINT_B,
-  false,
+  Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
+  false,              //just an example incase we need to change them.
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberEncoder(
   Encoders::GRABBER_A,
-  Encoders::GRABBER_B,
-  false,
-  frc::Encoder::EncodingType::k4X
+  Encoders::GRABBER_B
 ),
 armExtensionEncoder(
   Encoders::EXTENSION_A,
-  Encoders::EXTENSION_B,
-  false,
-  frc::Encoder::EncodingType::k4X
+  Encoders::EXTENSION_B
 ),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
@@ -187,7 +183,7 @@ frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
  * within their respective limits. 
  */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return frc2::cmd::Run( [this] {
+  return this->Run( [this] {
     MoveJointWithinLimits();
     MoveExtensionWithinLimits();
     MoveGrabberWithinLimits(); });

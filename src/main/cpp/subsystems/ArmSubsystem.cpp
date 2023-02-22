@@ -16,8 +16,7 @@ armJointEncoder(
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberEncoder(
-  Encoders::GRABBER_A,
-  Encoders::GRABBER_B
+  Encoders::GRABBER_ENCODER
 ),
 armExtensionEncoder(
   Encoders::EXTENSION_A,

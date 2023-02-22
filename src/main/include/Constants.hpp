@@ -47,8 +47,7 @@ enum MotorControllers {
 enum Encoders {
   JOINT_A,
   JOINT_B,
-  GRABBER_A,
-  GRABBER_B,
+  GRABBER_ENCODER = 0,
   EXTENSION_A,
   EXTENSION_B
 };

@@ -35,6 +35,7 @@ armCompressor(
   StartCompressor();
   SetJointLimits(JointPositions::POS2);
   SetExtensionLimits(ExtensionPositions::RETRACTED);
+  time.Start();
 }
 /* ---===#########################################===--- */
 
@@ -101,6 +102,13 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 void ArmSubsystem::Periodic() {
   UpdateValues();
   PrintToDashboard();
+  if ( time.HasElapsed(1_s) ) {
+    std::cout << "Joint: " << armJointDistance << "\n";
+    std::cout << "Grabber: " << armGrabberDistance << "\n";
+    std::cout << "Extension: " << armExtensionDistance << "\n";
+    time.Reset();
+    time.Start();
+  }
 }
 
 void ArmSubsystem::ResetEncoders() {
@@ -198,14 +206,14 @@ void ArmSubsystem::MoveJointWithinLimits() {
 void ArmSubsystem::MoveExtensionWithinLimits() {
   MoveWithinLimits(
     &armExtension, armExtensionDistance,
-    UPPER_EXTENSION_LIMIT, LOWER_EXTENSION_LIMIT,
+    LOWER_EXTENSION_LIMIT, UPPER_EXTENSION_LIMIT,
     Speeds::EXTEND, Speeds::RETRACT
   );
 }
 void ArmSubsystem::MoveGrabberWithinLimits() {
   MoveWithinLimits(
     &armGrabber, armGrabberDistance,
-    UPPER_GRABBER_LIMIT, LOWER_GRABBER_LIMIT,
+    LOWER_GRABBER_LIMIT, UPPER_GRABBER_LIMIT, 
     Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
   );
 }
@@ -213,8 +221,8 @@ void ArmSubsystem::MoveGrabberWithinLimits() {
 template <class T> void ArmSubsystem::MoveWithinLimits(T motor, int distance, 
   int min, int max, double speedf, double speedb)
 {
-  if (min < distance && distance < max) motor->Set(0.0);
-  else if ( distance < min )            motor->Set(speedf);
-  else if ( distance > max )            motor->Set(speedb);
+  if ( min < distance && distance < max ) motor->Set(0.0);
+  else if ( distance < min )              motor->Set(speedf);
+  else if ( distance > max )              motor->Set(speedb);
 }
 /* ---===#########################################===--- */

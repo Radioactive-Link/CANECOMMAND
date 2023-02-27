@@ -31,8 +31,6 @@ class RobotContainer {
   frc2::Trigger bButton = driveController.B();
   frc2::Trigger RB      = driveController.RightBumper();
   frc2::Trigger LB      = driveController.LeftBumper();
-  frc2::Trigger RT      = driveController.RightTrigger();
-  frc2::Trigger LT      = driveController.LeftTrigger();
   
   //* The robot's subsystems are defined here...
   // ExampleSubsystem m_subsystem;

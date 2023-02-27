@@ -11,16 +11,17 @@
  */
 
 namespace Constants {
-/* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~
- * Stuff not big enough to be own category
- */ 
+/* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~ */
+/**
+ * @desc: Stuff not big enough to be own category
+ */
 enum class Mode {
   NORMAL,
   DEBUG
 };
 //!Pick mode here
 //constexpr to avoid "multiple definition of MODE"
-Mode constexpr MODE = Mode::NORMAL;
+Mode constexpr MODE = Mode::DEBUG;
 
 int constexpr COMPRESSOR = 0;
 
@@ -35,20 +36,20 @@ enum Solenoids {
 enum MotorControllers {
   //= Drive
   BACK_LEFT   = 13,
-  FRONT_LEFT,
-  BACK_RIGHT  = 1,
-  FRONT_RIGHT,
+  FRONT_LEFT  = 12,
+  BACK_RIGHT  = 2,
+  FRONT_RIGHT = 1,
   //= ARM
-  EXTENSION   = 7,
+  EXTENSION   = 45,
   GRABBER     = 0,
-  JOINT       = 45
+  JOINT       = 7
 };
 
 enum Encoders {
+  GRABBER_ENCODER = 3,
   JOINT_A,
   JOINT_B,
-  GRABBER_ENCODER = 0,
-  EXTENSION_A,
+  EXTENSION_A= 0,
   EXTENSION_B
 };
 
@@ -94,10 +95,10 @@ enum ExtensionLimits {
   EXTEND_MAX
 };
 namespace Speeds { //enums can't have doubles
-  double constexpr EXTEND = 0.8;
-  double constexpr RETRACT = 0.8;
-  double constexpr JOINT_UPWARDS = -0.8;
-  double constexpr JOINT_DOWNWARDS = 0.8;
+  double constexpr EXTEND = -1.0;
+  double constexpr RETRACT = 1.0;
+  double constexpr JOINT_UPWARDS = -1;
+  double constexpr JOINT_DOWNWARDS = 1;
   double constexpr GRAB_UPWARDS = 0.5;
   double constexpr GRAB_DOWNWARDS = -0.5;
 } // namespace Speeds

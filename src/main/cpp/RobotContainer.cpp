@@ -14,8 +14,12 @@ RobotContainer::RobotContainer() {
   /**
    * @desc: Set default/fallback command on the m_drive and m_arm subsystems
    */
-  m_drive.SetDefaultCommand(std::move(m_drive.Drive(driveController.GetLeftY(), driveController.GetLeftX())));
-  m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
+  m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
+    [this] 
+      {m_drive.Drive(driveController.GetLeftY(), driveController.GetRightX());}, 
+      {&m_drive}
+  )));
+  //m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -44,10 +48,13 @@ void RobotContainer::ConfigureBindings() {
   }
   else if ( Constants::MODE == Constants::Mode::DEBUG ) {
     //All make sure opposite condition is false so that arm doesn't try to move both ways at once
+    //threshold, event
+    driveController.RightTrigger(0.8).OnTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
+    driveController.LeftTrigger(0.8).OnTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
     (RB && !LB).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
     (LB && !RB).WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
-    (RT && !LT).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
-    (LT && !RT).WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
+    (RB && !LB).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
+    (LB && !RB).WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
     (yButton && !xButton).WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
     (xButton && !yButton).WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
   }

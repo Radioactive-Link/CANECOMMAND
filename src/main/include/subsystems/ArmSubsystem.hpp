@@ -1,8 +1,12 @@
 #pragma once
 
+#include <iostream>
+
 #include <frc/Encoder.h>
 #include <frc/AnalogEncoder.h>
 #include <frc/Solenoid.h>
+#include <frc/Timer.h>
+#include <units/time.h>
 #include <frc/Compressor.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
@@ -91,4 +95,5 @@ private:
   int armJointDistance;
   int armGrabberDistance;
   int armExtensionDistance;
+  frc::Timer time;
 };

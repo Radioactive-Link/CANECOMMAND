@@ -28,9 +28,8 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
     [this] {m_drive.ArcadeDrive(0.0,0.0); });
 }
 
-frc2::CommandPtr DriveSubsystem::Drive(double f, double r) {
-  return this->Run(
-    [this,f,r] {m_drive.ArcadeDrive(f,r); });
+void DriveSubsystem::Drive(double f, double r) {
+  m_drive.ArcadeDrive(f,r);
 }
 
 /**

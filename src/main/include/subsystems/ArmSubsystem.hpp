@@ -92,8 +92,8 @@ private:
   int UPPER_EXTENSION_LIMIT;
   int LOWER_EXTENSION_LIMIT;
 
-  int armJointDistance;
-  int armGrabberDistance;
-  int armExtensionDistance;
+  double armJointDistance;
+  double armGrabberDistance;
+  double armExtensionDistance;
   frc::Timer time;
 };

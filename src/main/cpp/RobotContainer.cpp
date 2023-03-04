@@ -53,8 +53,6 @@ void RobotContainer::ConfigureBindings() {
     driveController.LeftTrigger(0.8).OnTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
     (RB && !LB).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
     (LB && !RB).WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
-    (RB && !LB).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
-    (LB && !RB).WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
     (yButton && !xButton).WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
     (xButton && !yButton).WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
   }

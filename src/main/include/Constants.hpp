@@ -15,14 +15,6 @@ namespace Constants {
 /**
  * @desc: Stuff not big enough to be own category
  */
-enum class Mode {
-  NORMAL,
-  DEBUG
-};
-//!Pick mode here
-//constexpr to avoid "multiple definition of MODE"
-Mode constexpr MODE = Mode::DEBUG;
-
 int constexpr COMPRESSOR = 0;
 
 enum Controllers {

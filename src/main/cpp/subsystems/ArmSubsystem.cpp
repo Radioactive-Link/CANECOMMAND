@@ -1,11 +1,7 @@
 #include "subsystems/ArmSubsystem.hpp"
 
-using namespace Constants;
-using namespace Constants::ArmConstants;
-
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-ArmSubsystem::ArmSubsystem() 
-:
+ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
 armExtension(MotorControllers::EXTENSION),
@@ -15,9 +11,7 @@ armJointEncoder(
   false,              //just an example incase we need to change them.
   frc::Encoder::EncodingType::k4X
 ),
-armGrabberEncoder(
-  Encoders::GRABBER_ENCODER
-),
+armGrabberEncoder(Encoders::GRABBER_ENCODER),
 armExtensionEncoder(
   Encoders::EXTENSION_A,
   Encoders::EXTENSION_B
@@ -29,10 +23,10 @@ armGrabberPiston(
 armCompressor(
   COMPRESSOR,
   frc::PneumaticsModuleType::CTREPCM
-)
-{ //Constructor Body
+) { //Constructor Body
   StopCompressor();
   StartCompressor();
+  ResetEncoders();
   SetJointLimits(JointPositions::POS2);
   SetExtensionLimits(ExtensionPositions::RETRACTED);
 }
@@ -211,8 +205,7 @@ void ArmSubsystem::MoveGrabberWithinLimits() {
 }
 
 void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance, 
-  int min, int max, double speedf, double speedb)
-{
+int min, int max, double speedf, double speedb) {
   if ( min + 30 < distance && distance < max - 30 ) motor->Set(0.0);
   else if ( distance < min )                        motor->Set(speedf);
   else if ( distance > max )                        motor->Set(speedb);

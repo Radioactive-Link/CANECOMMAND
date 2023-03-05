@@ -1,7 +1,5 @@
 #include "RobotContainer.h"
 
-#include <frc2/command/button/Trigger.h>
-
 #include "commands/AutoCommand.hpp"
 
 
@@ -19,6 +17,9 @@ RobotContainer::RobotContainer() {
       {m_drive.Drive(driveController.GetLeftY(), driveController.GetRightX());}, 
       {&m_drive}
   )));
+  /**
+   * @note: Make sure the following line is commented out in
+   */
   //m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
 }
 
@@ -39,27 +40,38 @@ void RobotContainer::ConfigureBindings() {
   // Schedule `ExampleMethodCommand` when the Xbox controller's B button is
   // pressed, cancelling on release.
   // driveController.B().WhileTrue(m_subsystem.ExampleMethodCommand());
-  if ( Constants::MODE == Constants::Mode::NORMAL ) {
+  if ( mode == Mode::NORMAL ) {
     xButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS1));
     yButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS2));
     bButton.OnTrue(m_arm.SetJointLimits(JointPositions::POS3));
     RB.OnTrue(m_arm.SetExtensionLimits(ExtensionPositions::EXTENDED));
     LB.OnTrue(m_arm.SetExtensionLimits(ExtensionPositions::RETRACTED));
   }
-  else if ( Constants::MODE == Constants::Mode::DEBUG ) {
+  else if ( mode == Mode::DEBUG ) {
     //All make sure opposite condition is false so that arm doesn't try to move both ways at once
     //threshold, event
-    driveController.RightTrigger(0.8).OnTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
-    driveController.LeftTrigger(0.8).OnTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
+    (RT && !LT).OnTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
+    (LT && !RT).OnTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
     (RB && !LB).WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
     (LB && !RB).WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
     (yButton && !xButton).WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
     (xButton && !yButton).WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
+
+    RStick.OnTrue(frc2::cmd::RunOnce([this] {
+      m_arm.ResetEncoders();
+    }, {&m_arm}));
   }
   //No matter the mode
   aButton.OnTrue(m_arm.ToggleGrabber());
+  LStick.OnTrue(frc2::cmd::RunOnce([this] {
+    if (mode == Mode::DEBUG) mode = Mode::NORMAL;
+    else mode = Mode::DEBUG;
+    ConfigureBindings(); //refresh bindings since mode changed
+  }));
+  
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   return Auto::BasicAutoCommand(&m_drive);
+  //return Auto::AdvancedAutoCommand(&m_drive, &m_arm);
 }

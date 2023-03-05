@@ -2,15 +2,15 @@
 
 #include <iostream>
 
-#include <frc/Encoder.h>
-#include <frc/AnalogEncoder.h>
-#include <frc/Solenoid.h>
 #include <frc/Timer.h>
 #include <units/time.h>
+#include <frc/Encoder.h>
+#include <frc/Solenoid.h>
 #include <frc/Compressor.h>
+#include <frc/AnalogEncoder.h>
+#include <frc2/command/Commands.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
-#include <frc2/command/Commands.h>
 #include <wpi/sendable/SendableBuilder.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "ctre/Phoenix.h"

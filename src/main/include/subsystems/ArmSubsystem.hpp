@@ -59,9 +59,7 @@ public:
   frc2::CommandPtr SetJointLimits(JointPositions pos);
   frc2::CommandPtr SetExtensionLimits(ExtensionPositions pos);
 
-  //Template incase electrical wants to use a vector motor controller
-  template <class T = WPI_TalonSRX*> 
-  void MoveWithinLimits(T motor, int distance, int min, int max, double speedf, double speedb);
+  void MoveWithinLimits(WPI_TalonSRX* motor, int distance, int min, int max, double speedf, double speedb);
   void MoveJointWithinLimits();
   void MoveExtensionWithinLimits();
   void MoveGrabberWithinLimits();
@@ -85,15 +83,14 @@ private:
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
 
-  int UPPER_JOINT_LIMIT;
-  int LOWER_JOINT_LIMIT;
-  int UPPER_GRABBER_LIMIT;
-  int LOWER_GRABBER_LIMIT;
-  int UPPER_EXTENSION_LIMIT;
-  int LOWER_EXTENSION_LIMIT;
+  double UPPER_JOINT_LIMIT;
+  double LOWER_JOINT_LIMIT;
+  double UPPER_GRABBER_LIMIT;
+  double LOWER_GRABBER_LIMIT;
+  double UPPER_EXTENSION_LIMIT;
+  double LOWER_EXTENSION_LIMIT;
 
   double armJointDistance;
   double armGrabberDistance;
   double armExtensionDistance;
-  frc::Timer time;
 };

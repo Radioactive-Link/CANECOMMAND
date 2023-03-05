@@ -35,7 +35,6 @@ armCompressor(
   StartCompressor();
   SetJointLimits(JointPositions::POS2);
   SetExtensionLimits(ExtensionPositions::RETRACTED);
-  time.Start();
 }
 /* ---===#########################################===--- */
 
@@ -102,13 +101,6 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 void ArmSubsystem::Periodic() {
   UpdateValues();
   PrintToDashboard();
-  if ( time.HasElapsed(1_s) ) {
-    std::cout << "Joint: " << armJointDistance << "\n";
-    std::cout << "Grabber: " << armGrabberDistance << "\n";
-    std::cout << "Extension: " << armExtensionDistance << "\n";
-    time.Reset();
-    time.Start();
-  }
 }
 
 void ArmSubsystem::ResetEncoders() {
@@ -218,11 +210,11 @@ void ArmSubsystem::MoveGrabberWithinLimits() {
   );
 }
 
-template <class T> void ArmSubsystem::MoveWithinLimits(T motor, int distance, 
+void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance, 
   int min, int max, double speedf, double speedb)
 {
-  if ( min < distance && distance < max ) motor->Set(0.0);
-  else if ( distance < min )              motor->Set(speedf);
-  else if ( distance > max )              motor->Set(speedb);
+  if ( min + 30 < distance && distance < max - 30 ) motor->Set(0.0);
+  else if ( distance < min )                        motor->Set(speedf);
+  else if ( distance > max )                        motor->Set(speedb);
 }
 /* ---===#########################################===--- */

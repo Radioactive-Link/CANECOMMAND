@@ -76,12 +76,12 @@ namespace JointLimits {
  double const POS3MAX = 0;
 } //namespace JointLimits
 namespace GrabLimits {
- double const GRAB_POS1MIN = 0;
- double const GRAB_POS1MAX = 0;
- double const GRAB_POS2MIN = 0;
- double const GRAB_POS2MAX = 0;
- double const GRAB_POS3MIN = 0;
- double const GRAB_POS3MAX = 0;
+  double const GRAB_POS1MIN = 0;
+  double const GRAB_POS1MAX = 0;
+  double const GRAB_POS2MIN = 0;
+  double const GRAB_POS2MAX = 0;
+  double const GRAB_POS3MIN = 0;
+  double const GRAB_POS3MAX = 0;
 
 } //namespace GrabLimits
 
@@ -90,10 +90,10 @@ enum class ExtensionPositions {
   RETRACTED
 };
 namespace ExtensionLimits {
- double const RETRACT_MIN = 0;
- double const RETRACT_MAX = 0;
- double const EXTEND_MIN = 0;
- double const EXTEND_MAX = 0;
+  double const RETRACT_MIN = 0;
+  double const RETRACT_MAX = 0;
+  double const EXTEND_MIN = 0;
+  double const EXTEND_MAX = 0;
 } //namespace ExtensionLimits
 namespace Speeds { //enums can't have doubles
   double constexpr EXTEND = -10.0;

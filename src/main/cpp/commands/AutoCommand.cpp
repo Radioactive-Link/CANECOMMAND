@@ -1,18 +1,7 @@
 #include "commands/AutoCommand.hpp"
 
-#include <frc2/command/Commands.h>
-
-#include "commands/ExampleCommand.hpp"
-
-// frc2::CommandPtr Autos::ExampleAuto(ExampleSubsystem* subsystem) {
-//   return frc2::cmd::Sequence(
-//     subsystem->ExampleMethodCommand(),
-//     ExampleCommand(subsystem).ToPtr()
-//   );
-// }
-
 frc2::CommandPtr Auto::BasicAutoCommand(DriveSubsystem* drive) {
-  return drive->Drive(-1.0,0.0).WithTimeout(2_s).AndThen(drive->Drive(0.0,0.0));
+  return frc2::cmd::Run([drive] {drive->Drive(0.5,0.0);}).WithTimeout(2_s).AndThen([drive] {drive->Drive(0.0,0.0);});
 }
 
 frc2::CommandPtr Auto::AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm) {

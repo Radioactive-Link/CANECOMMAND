@@ -1,5 +1,6 @@
 #pragma once
 
+#include <frc2/command/Commands.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
@@ -10,7 +11,7 @@
 
 /** 
  **Static factory for autonomous command
- **Put auto code here 
+ **Put auto code definitions here 
  */ 
 namespace Auto {
 /**

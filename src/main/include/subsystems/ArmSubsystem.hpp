@@ -1,11 +1,16 @@
 #pragma once
 
+#include <iostream>
+
+#include <frc/Timer.h>
+#include <units/time.h>
 #include <frc/Encoder.h>
 #include <frc/Solenoid.h>
 #include <frc/Compressor.h>
+#include <frc/AnalogEncoder.h>
+#include <frc2/command/Commands.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
-#include <frc2/command/Commands.h>
 #include <wpi/sendable/SendableBuilder.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include "ctre/Phoenix.h"
@@ -54,9 +59,7 @@ public:
   frc2::CommandPtr SetJointLimits(JointPositions pos);
   frc2::CommandPtr SetExtensionLimits(ExtensionPositions pos);
 
-  //Template incase electrical wants to use a vector motor controller
-  template <class T = WPI_TalonSRX*> 
-  void MoveWithinLimits(T motor, int distance, int min, int max, double speedf, double speedb);
+  void MoveWithinLimits(WPI_TalonSRX* motor, int distance, int min, int max, double speedf, double speedb);
   void MoveJointWithinLimits();
   void MoveExtensionWithinLimits();
   void MoveGrabberWithinLimits();
@@ -75,19 +78,19 @@ private:
   WPI_TalonSRX armGrabber;
   WPI_TalonSRX armExtension;
   frc::Encoder armJointEncoder;
-  frc::Encoder armGrabberEncoder;
+  frc::AnalogEncoder armGrabberEncoder;
   frc::Encoder armExtensionEncoder;
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
 
-  int UPPER_JOINT_LIMIT;
-  int LOWER_JOINT_LIMIT;
-  int UPPER_GRABBER_LIMIT;
-  int LOWER_GRABBER_LIMIT;
-  int UPPER_EXTENSION_LIMIT;
-  int LOWER_EXTENSION_LIMIT;
+  double UPPER_JOINT_LIMIT;
+  double LOWER_JOINT_LIMIT;
+  double UPPER_GRABBER_LIMIT;
+  double LOWER_GRABBER_LIMIT;
+  double UPPER_EXTENSION_LIMIT;
+  double LOWER_EXTENSION_LIMIT;
 
-  int armJointDistance;
-  int armGrabberDistance;
-  int armExtensionDistance;
+  double armJointDistance;
+  double armGrabberDistance;
+  double armExtensionDistance;
 };

@@ -1,31 +1,20 @@
 #include "subsystems/ArmSubsystem.hpp"
 
-using namespace Constants;
-using namespace Constants::ArmConstants;
-
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-ArmSubsystem::ArmSubsystem() 
-:
+ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
 armExtension(MotorControllers::EXTENSION),
 armJointEncoder(
   Encoders::JOINT_A,
-  Encoders::JOINT_B,
-  false,
+  Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
+  false,              //just an example incase we need to change them.
   frc::Encoder::EncodingType::k4X
 ),
-armGrabberEncoder(
-  Encoders::JOINT_A,
-  Encoders::JOINT_B,
-  false,
-  frc::Encoder::EncodingType::k4X
-),
+armGrabberEncoder(Encoders::GRABBER_ENCODER),
 armExtensionEncoder(
-  Encoders::JOINT_A,
-  Encoders::JOINT_B,
-  false,
-  frc::Encoder::EncodingType::k4X
+  Encoders::EXTENSION_A,
+  Encoders::EXTENSION_B
 ),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
@@ -34,10 +23,10 @@ armGrabberPiston(
 armCompressor(
   COMPRESSOR,
   frc::PneumaticsModuleType::CTREPCM
-)
-{ //Constructor Body
+) { //Constructor Body
   StopCompressor();
   StartCompressor();
+  ResetEncoders();
   SetJointLimits(JointPositions::POS2);
   SetExtensionLimits(ExtensionPositions::RETRACTED);
 }
@@ -187,7 +176,7 @@ frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
  * within their respective limits. 
  */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return frc2::cmd::Run( [this] {
+  return this->Run( [this] {
     MoveJointWithinLimits();
     MoveExtensionWithinLimits();
     MoveGrabberWithinLimits(); });
@@ -203,23 +192,22 @@ void ArmSubsystem::MoveJointWithinLimits() {
 void ArmSubsystem::MoveExtensionWithinLimits() {
   MoveWithinLimits(
     &armExtension, armExtensionDistance,
-    UPPER_EXTENSION_LIMIT, LOWER_EXTENSION_LIMIT,
+    LOWER_EXTENSION_LIMIT, UPPER_EXTENSION_LIMIT,
     Speeds::EXTEND, Speeds::RETRACT
   );
 }
 void ArmSubsystem::MoveGrabberWithinLimits() {
   MoveWithinLimits(
     &armGrabber, armGrabberDistance,
-    UPPER_GRABBER_LIMIT, LOWER_GRABBER_LIMIT,
+    LOWER_GRABBER_LIMIT, UPPER_GRABBER_LIMIT, 
     Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
   );
 }
 
-template <class T> void ArmSubsystem::MoveWithinLimits(T motor, int distance, 
-  int min, int max, double speedf, double speedb)
-{
-  if (min < distance && distance < max) motor->Set(0.0);
-  else if ( distance < min )            motor->Set(speedf);
-  else if ( distance > max )            motor->Set(speedb);
+void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance, 
+int min, int max, double speedf, double speedb) {
+  if ( min + 30 < distance && distance < max - 30 ) motor->Set(0.0);
+  else if ( distance < min )                        motor->Set(speedf);
+  else if ( distance > max )                        motor->Set(speedb);
 }
 /* ---===#########################################===--- */

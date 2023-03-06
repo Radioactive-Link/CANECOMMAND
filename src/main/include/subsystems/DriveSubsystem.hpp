@@ -21,7 +21,7 @@ public:
   void InitSendable(wpi::SendableBuilder& builder) override;
 
   frc2::CommandPtr StopDrive();
-  frc2::CommandPtr Drive(double f, double r);
+  void Drive(double f, double r);
 
   void AutoCorrect();
   int DetermineNearestDirection();

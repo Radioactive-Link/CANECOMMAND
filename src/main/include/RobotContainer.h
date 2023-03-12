@@ -63,5 +63,6 @@ class RobotContainer {
   ArmSubsystem m_arm;
   DriveSubsystem m_drive;
 
-  void ConfigureBindings();
+  void ConfigureArmBindings();
+  void ConfigureDriveBindings();
 };

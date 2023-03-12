@@ -13,28 +13,12 @@ RobotContainer::RobotContainer() {
   }
   frc::SmartDashboard::PutData("Auto Commands", &chooser);
   // Configure the button bindings
-  ConfigureBindings();
+  ConfigureArmBindings();
+  ConfigureDriveBindings();
 }
 
-void RobotContainer::ConfigureBindings() {
-  /**
-   * @desc: Set default/fallback command on the m_drive and m_arm subsystems
-   */
-  if ( driveMode == DriveMode::NORMAL ) {
-    m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
-      [this] 
-        {m_drive.Drive(driveController.GetLeftY()/1.3, driveController.GetRightX()/1.3);}, 
-        {&m_drive}
-    )));
-  }
-  else if ( driveMode == DriveMode::PRECISION ) {
-    m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
-    [this] 
-      {m_drive.Drive(driveController.GetLeftY()/1.6, driveController.GetRightX()/1.6);}, 
-      {&m_drive}
-   )));
-  }
-  //Configure your trigger bindings here
+void RobotContainer::ConfigureArmBindings() {
+  //Configure your trigger bindings for the arm here
   /**
    * @example:
    * controller.button.condition(subsystem.func())
@@ -65,14 +49,36 @@ void RobotContainer::ConfigureBindings() {
   }
   //No matter the mode
   aButton.OnTrue(m_arm.ToggleGrabber());
-  LStick.OnTrue(frc2::cmd::RunOnce([this] {
-    driveMode != DriveMode::NORMAL ? driveMode = DriveMode::NORMAL : driveMode = DriveMode::PRECISION;
-    ConfigureBindings(); //refresh bindings since mode changed
-  }));
   // Start.OnTrue(frc2::cmd::RunOnce([this] {
   //   mode != ArmMode::AUTO ? mode = ArmMode::AUTO : mode = ArmMode::NORMAL;
   //   ConfigureBindings();
   // }));
+}
+
+void RobotContainer::ConfigureDriveBindings() {
+  /**
+   * @desc: Set default/fallback command on the m_drive subsystem
+   */
+  if ( driveMode == DriveMode::NORMAL ) {
+    m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
+      [this] 
+        {m_drive.Drive(driveController.GetLeftY()/1.3, driveController.GetRightX()/1.3);}, 
+        {&m_drive}
+    )));
+  }
+  else if ( driveMode == DriveMode::PRECISION ) {
+    m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
+    [this] 
+      {m_drive.Drive(driveController.GetLeftY()/1.6, driveController.GetRightX()/1.6);}, 
+      {&m_drive}
+   )));
+  }
+
+  //Mode toggle = Lstick
+  LStick.OnTrue(frc2::cmd::RunOnce([this] {
+    driveMode != DriveMode::NORMAL ? driveMode = DriveMode::NORMAL : driveMode = DriveMode::PRECISION;
+    ConfigureDriveBindings(); //refresh bindings since mode changed
+  }));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

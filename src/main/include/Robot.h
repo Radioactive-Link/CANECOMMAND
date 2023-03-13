@@ -4,7 +4,6 @@
 //wpi/vendordeps
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
-#include "ctre/Phoenix.h"
 //User
 #include "RobotContainer.h"
 
@@ -25,9 +24,7 @@ class Robot : public TimedRobot {
   void SimulationPeriodic() override;
 
  private:
-  // Have it empty by default so that if testing teleop it
-  // doesn't have undefined behavior and potentially crash.
+  //optional so that if testing telop, no errors are caused because autonomous wasn't ran.
   std::optional<frc2::CommandPtr> m_autonomousCommand;
-
   RobotContainer m_container;
 };

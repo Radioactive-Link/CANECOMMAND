@@ -32,7 +32,7 @@ enum MotorControllers {
   FRONT_LEFT  = 12,
   BACK_LEFT   = 13,
   //= ARM
-  GRABBER     = 0,
+  GRABBER     = 5,
   JOINT       = 7,
   EXTENSION   = 45
 };

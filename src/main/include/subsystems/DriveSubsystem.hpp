@@ -25,8 +25,10 @@ public:
 
   void AutoCorrect();
   int DetermineNearestDirection();
+  void SetDriveMode(DriveMode mode);
 
 private:
+  DriveMode mode = DriveMode::NORMAL;
   WPI_TalonSRX m_frontLeft;
   WPI_TalonSRX m_backLeft;
   frc::MotorControllerGroup m_left;

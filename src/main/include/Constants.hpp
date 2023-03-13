@@ -60,12 +60,12 @@ enum class JointPositions {
   POS3
 };
 namespace JointLimits {
- double const POS1MIN = 0;
- double const POS1MAX = 0;
- double const POS2MIN = 0;
- double const POS2MAX = 0;
- double const POS3MIN = 0;
- double const POS3MAX = 0;
+  double const POS1MIN = 0;
+  double const POS1MAX = 0;
+  double const POS2MIN = 0;
+  double const POS2MAX = 0;
+  double const POS3MIN = 0;
+  double const POS3MAX = 0;
 } //namespace JointLimits
 namespace GrabLimits {
   double const GRAB_POS1MIN = 0;
@@ -74,7 +74,6 @@ namespace GrabLimits {
   double const GRAB_POS2MAX = 0;
   double const GRAB_POS3MIN = 0;
   double const GRAB_POS3MAX = 0;
-
 } //namespace GrabLimits
 
 enum class ExtensionPositions {

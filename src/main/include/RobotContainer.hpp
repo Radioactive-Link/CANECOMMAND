@@ -29,6 +29,7 @@ class RobotContainer {
   frc2::CommandPtr GetAutonomousCommand();
 
  private:
+  //TODO: Change these to setter functions that are commands in respective subsystems.
   enum class DriveMode {
     NORMAL,
     PRECISION

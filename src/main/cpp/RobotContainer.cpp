@@ -1,4 +1,4 @@
-#include "RobotContainer.h"
+#include "RobotContainer.hpp"
 
 #include <frc2/command/CommandScheduler.h>
 
@@ -89,5 +89,6 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   if (selected == "Advanced") {
     return Auto::AdvancedAutoCommand(&m_drive, &m_arm);
   }
+  //Default: "Basic"
   return Auto::BasicAutoCommand(&m_drive);
 }

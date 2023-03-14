@@ -48,14 +48,11 @@ enum MotorControllers {
   //= ARM
   GRABBER     = 5,
   JOINT       = 7,
-  EXTENSION   = 45
 };
 
 enum Encoders {
   GRABBER_ENCODER,
-  EXTENSION_A,
-  EXTENSION_B,
-  JOINT_A,
+  JOINT_A = 3,
   JOINT_B
 };
 
@@ -86,14 +83,8 @@ namespace GrabLimits {
   double const OBJECT_DROPOFF_MID = 1.0;
   double const OBJECT_DROPOFF_HIGH = 1.0;
 } //namespace GrabLimits
-namespace ExtensionLimits {
-  double const RETRACTED = 0.0;
-  double const EXTENDED = 1000.0;
-} //namespace ExtensionLimits
 
 namespace Speeds { //enums can't have doubles
-  double const EXTEND = -10.0;
-  double const RETRACT = 10.0;
   double const JOINT_UPWARDS = -1;
   double const JOINT_DOWNWARDS = 1;
   double const GRAB_UPWARDS = 0.8;

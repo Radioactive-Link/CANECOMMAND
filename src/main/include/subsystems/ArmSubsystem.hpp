@@ -36,7 +36,7 @@ using namespace Constants::ArmConstants;
  * of type CommandPtr.
  */
 class ArmSubsystem : public frc2::SubsystemBase {
-public:
+ public:
   ArmSubsystem();
 
   void Periodic() override;
@@ -51,7 +51,6 @@ public:
 
   frc2::CommandPtr StopJoint();
   frc2::CommandPtr StopGrabber();
-  frc2::CommandPtr StopExtension();
 
   frc2::CommandPtr ToggleGrabber();
 
@@ -59,7 +58,6 @@ public:
 
   void MoveWithinLimits(WPI_TalonSRX* motor, int distance, double desiredPos, double speedf, double speedb);
   void MoveJointWithinLimits();
-  void MoveExtensionWithinLimits();
   void MoveGrabberWithinLimits();
   frc2::CommandPtr MoveArmWithinLimits();
 
@@ -67,8 +65,6 @@ public:
   frc2::CommandPtr ToggleArmMode();
   frc2::CommandPtr ManualJointUp();
   frc2::CommandPtr ManualJointDown();
-  frc2::CommandPtr ManualExtend();
-  frc2::CommandPtr ManualRetract();
   frc2::CommandPtr ManualGrabberUp();
   frc2::CommandPtr ManualGrabberDown();
 private:
@@ -76,18 +72,14 @@ private:
   Constants::ArmMode armMode = Constants::ArmMode::NORMAL;
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;
-  WPI_TalonSRX armExtension;
   frc::Encoder armJointEncoder;
   frc::AnalogEncoder armGrabberEncoder;
-  frc::Encoder armExtensionEncoder;
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
 
   double jointSetPoint;
   double grabberSetPoint;
-  double extensionSetPoint;
 
   double armJointDistance;
   double armGrabberDistance;
-  double armExtensionDistance;
 };

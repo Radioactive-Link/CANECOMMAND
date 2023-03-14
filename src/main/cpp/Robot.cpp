@@ -59,9 +59,7 @@ void Robot::TeleopPeriodic() {}
 /**
  * Initialization code for test mode should go here.
  */
-void Robot::TestInit() {
-  m_container.ConfigureArmManualBindings(); //we only want to include the manual bindings when testing.
-}
+void Robot::TestInit() {}
 
 /**
  * This function is called periodically during test mode.

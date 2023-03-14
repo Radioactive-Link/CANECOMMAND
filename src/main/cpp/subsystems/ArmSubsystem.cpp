@@ -4,7 +4,6 @@
 ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
-armExtension(MotorControllers::EXTENSION),
 armJointEncoder(
   Encoders::JOINT_A,
   Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
@@ -12,10 +11,6 @@ armJointEncoder(
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberEncoder(Encoders::GRABBER_ENCODER),
-armExtensionEncoder(
-  Encoders::EXTENSION_A,
-  Encoders::EXTENSION_B
-),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
   Solenoids::ARM_PISTON
@@ -37,15 +32,6 @@ frc2::CommandPtr ArmSubsystem::ManualJointUp() {
 frc2::CommandPtr ArmSubsystem::ManualJointDown() {
   return this->Run(
     [this] {armJoint.Set(Speeds::JOINT_DOWNWARDS); });
-}
-
-frc2::CommandPtr ArmSubsystem::ManualExtend() {
-  return this->Run(
-    [this] {armExtension.Set(Speeds::EXTEND); });
-}
-frc2::CommandPtr ArmSubsystem::ManualRetract() {
-  return this->Run(
-    [this] {armExtension.Set(Speeds::RETRACT); });
 }
 
 frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
@@ -75,7 +61,6 @@ void ArmSubsystem::PrintToDashboard() {
   frc::SmartDashboard::PutBoolean("ArmMode = NORMAL", armMode == Constants::ArmMode::NORMAL);
   frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
   frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
-  frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
 }
 
 void ArmSubsystem::StartCompressor() {
@@ -105,13 +90,11 @@ void ArmSubsystem::Periodic() {
 void ArmSubsystem::ResetEncoders() {
   armJointEncoder.Reset();
   armGrabberEncoder.Reset();
-  armExtensionEncoder.Reset();
 }
 
 void ArmSubsystem::UpdateValues() {
   armJointDistance = armJointEncoder.GetDistance();
   armGrabberDistance = armGrabberEncoder.GetDistance();
-  armExtensionDistance = armExtensionEncoder.GetDistance();
 }
 /* ---===#########################################===--- */
 
@@ -128,10 +111,6 @@ frc2::CommandPtr ArmSubsystem::StopGrabber() {
   return this->RunOnce(
     [this] {armGrabber.Set(0.0); });
 }
-frc2::CommandPtr ArmSubsystem::StopExtension() {
-  return this->RunOnce(
-    [this] {armExtension.Set(0.0); });
-}
 /* ---===#########################################===--- */
 
 /* --=#[ LIMITS ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -147,22 +126,18 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
       case ArmPositions::FOLDED:
         jointSetPoint = JointLimits::FOLDED;
         grabberSetPoint = GrabLimits::FOLDED;
-        extensionSetPoint = ExtensionLimits::RETRACTED;
         break;
       case ArmPositions::OBJECT_PICKUP:
         jointSetPoint = JointLimits::OBJECT_PICKUP;
         grabberSetPoint = GrabLimits::OBJECT_PICKUP;
-        extensionSetPoint = ExtensionLimits::RETRACTED;
         break;
       case ArmPositions::OBJECT_DROPOFF_MID:
         jointSetPoint = JointLimits::OBJECT_DROPOFF_MID;
         grabberSetPoint = GrabLimits::OBJECT_DROPOFF_MID;
-        extensionSetPoint = ExtensionLimits::RETRACTED;
         break;
       case ArmPositions::OBJECT_DROPOFF_HIGH:
         jointSetPoint = JointLimits::OBJECT_DROPOFF_HIGH;
         grabberSetPoint = GrabLimits::OBJECT_DROPOFF_HIGH;
-        extensionSetPoint = ExtensionLimits::EXTENDED;
       } }
     }
   );
@@ -175,7 +150,6 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
   return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) { //check mode so that arm motors don't have multiple funcs setting them at once.
     MoveJointWithinLimits();
-    MoveExtensionWithinLimits();
     MoveGrabberWithinLimits();} });
 }
 
@@ -183,12 +157,6 @@ void ArmSubsystem::MoveJointWithinLimits() {
   MoveWithinLimits(
     &armJoint, armJointDistance, jointSetPoint,
     Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
-  );
-}
-void ArmSubsystem::MoveExtensionWithinLimits() {
-  MoveWithinLimits(
-    &armExtension, armExtensionDistance, extensionSetPoint,
-    Speeds::EXTEND, Speeds::RETRACT
   );
 }
 void ArmSubsystem::MoveGrabberWithinLimits() {

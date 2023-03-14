@@ -22,6 +22,7 @@ RobotContainer::RobotContainer() {
    * comment out the Rstick ArmMode toggle.
    */
   ConfigureArmBindings();
+  ConfigureArmManualBindings();
   ConfigureDriveBindings();
 }
 
@@ -39,12 +40,11 @@ void RobotContainer::ConfigureArmBindings() {
    * @note: Following commands depend on the internal "ArmMode" state of the arm subsystem 
    * The mode toggle switches between Auto and Normal modes, in Normal, these bindings will be
    * ignored "as there is no supported way to clear bindings"?
-   * Default is Auto. Only applies to Testing mode. 
-   * For comp, the mentioned internal ArmMode state WILL NOT change as the
-   * binding to change it (@see: ConfigureArmManualBindings) will not be in effect as the robot should
-   * not be in testing mode.
+   * Default is Auto.
+   * For comp, the internal arm mode should not change. 
+   * Uncomment following line to test automatic mode.
    */
-  m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
+  // m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
   Start.OnTrue(m_arm.SetArmPosition(ArmPositions::FOLDED));
   xButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_PICKUP));
   yButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_MID));
@@ -54,11 +54,9 @@ void RobotContainer::ConfigureArmBindings() {
 
 void RobotContainer::ConfigureArmManualBindings() {
   /**
-   * @desc: Toggle between normal and auto modes.
+   * @desc: Toggle between normal and auto arm modes.
    */
-  RStick.OnTrue(m_arm.ToggleArmMode());
-  (RB && !LB).WhileTrue(m_arm.ManualExtend()).OnFalse(m_arm.StopExtension());
-  (LB && !RB).WhileTrue(m_arm.ManualRetract()).OnFalse(m_arm.StopExtension());
+  // RStick.OnTrue(m_arm.ToggleArmMode());
   dpadUp.WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
   dpadDown.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
   dpadLeft.WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());

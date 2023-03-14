@@ -23,6 +23,7 @@ frc2::CommandPtr BasicAutoCommand(DriveSubsystem* drive);
  * @desc: Auto command that balances the robot by moving forwards
  * @note: The robot has to be 1 Orren's foot away (16 in) from the
  * charging station for this to work.
+ * Currently does not use gyro
  */
 frc2::CommandPtr AutoBalanceCommand(DriveSubsystem* drive);
 

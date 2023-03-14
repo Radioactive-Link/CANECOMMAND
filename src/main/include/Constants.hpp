@@ -9,7 +9,6 @@
  * command-specific namespaces within this header, which can then be used where
  * they are needed.
  */
-
 namespace Constants {
 /* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~ */
 /**
@@ -25,83 +24,79 @@ enum Solenoids {
   ARM_PISTON
 };
 
+enum class DriveMode {
+  NORMAL,
+  PRECISION
+};
+
+/**
+ * @note: this, ideally will not be togglable.
+ * Currently has no use as manual bindings are added on top of the
+ * automatic bindings in testing mode.
+ */
+enum class ArmMode {
+  NORMAL,
+  AUTO
+};
+
 enum MotorControllers {
   //= Drive
   FRONT_RIGHT = 1,
-  BACK_RIGHT  = 2,
+  BACK_RIGHT,
   FRONT_LEFT  = 12,
-  BACK_LEFT   = 13,
+  BACK_LEFT,
   //= ARM
-  GRABBER     = 5,
-  JOINT       = 7,
-  EXTENSION   = 45
+  GRABBER     = 6,
+  JOINT
 };
 
 enum Encoders {
   GRABBER_ENCODER,
-  EXTENSION_A,
-  EXTENSION_B,
-  JOINT_A,
+  JOINT_A = 3,
   JOINT_B
 };
 
 /* --===############################===-- */
 
-/* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */ 
+/* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */
 namespace ArmConstants {
 /**
- **Enum classes are type-safe, useful for params.
- **Seen in ArmSubsystem limit-setting functions.
- *!As such, they can't be used to set int or double values.
+ * Enum classes are type-safe, useful for params.
+ * Seen in ArmSubsystem limit/position-setting functions.
+ * !As such, they can't be used to set int or double values.
 */
-enum class JointPositions {
-  POS1,
-  POS2,
-  POS3
+enum class ArmPositions {
+  FOLDED,
+  OBJECT_PICKUP,
+  OBJECT_DROPOFF_MID,
+  OBJECT_DROPOFF_HIGH
 };
 namespace JointLimits {
- double const POS1MIN = 0;
- double const POS1MAX = 0;
- double const POS2MIN = 0;
- double const POS2MAX = 0;
- double const POS3MIN = 0;
- double const POS3MAX = 0;
+  double const FOLDED = 0;
+  double const OBJECT_PICKUP = 1.0; //default until we figure out values
+  double const OBJECT_DROPOFF_MID = 1.0;
+  double const OBJECT_DROPOFF_HIGH = 1.0;
 } //namespace JointLimits
 namespace GrabLimits {
-  double const GRAB_POS1MIN = 0;
-  double const GRAB_POS1MAX = 0;
-  double const GRAB_POS2MIN = 0;
-  double const GRAB_POS2MAX = 0;
-  double const GRAB_POS3MIN = 0;
-  double const GRAB_POS3MAX = 0;
-
+  double const FOLDED = 0.0;
+  double const OBJECT_PICKUP = 1.0;
+  double const OBJECT_DROPOFF_MID = 1.0;
+  double const OBJECT_DROPOFF_HIGH = 1.0;
 } //namespace GrabLimits
 
-enum class ExtensionPositions {
-  EXTENDED,
-  RETRACTED
-};
-namespace ExtensionLimits {
-  double const RETRACT_MIN = 0;
-  double const RETRACT_MAX = 0;
-  double const EXTEND_MIN = 0;
-  double const EXTEND_MAX = 0;
-} //namespace ExtensionLimits
 namespace Speeds { //enums can't have doubles
-  double constexpr EXTEND = -10.0;
-  double constexpr RETRACT = 10.0;
-  double constexpr JOINT_UPWARDS = -1;
-  double constexpr JOINT_DOWNWARDS = 1;
-  double constexpr GRAB_UPWARDS = 0.5;
-  double constexpr GRAB_DOWNWARDS = -0.5;
+  double const JOINT_UPWARDS = -1;
+  double const JOINT_DOWNWARDS = 1;
+  double const GRAB_UPWARDS = 0.8;
+  double const GRAB_DOWNWARDS = -0.8;
 } // namespace Speeds
 } // namespace ArmConstants
 /* --===############################===-- */
 
+/* --=#[ DRIVETRAIN ]#=-- ~~~~~~~~~~~~~~~ */ 
 namespace DriveConstants {
 namespace Speeds {
-  double constexpr TELOP = 1.0;
-  double constexpr AUTO = 1.0;
+ /* Nothing :) */
 } // namespace Speeds
 } // namespace DriveConstants
 /* --===############################===-- */

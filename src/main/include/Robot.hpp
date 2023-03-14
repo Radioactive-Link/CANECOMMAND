@@ -5,7 +5,7 @@
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
 //User
-#include "RobotContainer.h"
+#include "RobotContainer.hpp"
 
 using namespace frc;
 
@@ -19,6 +19,7 @@ class Robot : public TimedRobot {
   void AutonomousPeriodic() override;
   void TeleopInit() override;
   void TeleopPeriodic() override;
+  void TestInit() override;
   void TestPeriodic() override;
   void SimulationInit() override;
   void SimulationPeriodic() override;

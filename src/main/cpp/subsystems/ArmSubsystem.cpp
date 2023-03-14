@@ -4,7 +4,6 @@
 ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
-armExtension(MotorControllers::EXTENSION),
 armJointEncoder(
   Encoders::JOINT_A,
   Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
@@ -12,10 +11,6 @@ armJointEncoder(
   frc::Encoder::EncodingType::k4X
 ),
 armGrabberEncoder(Encoders::GRABBER_ENCODER),
-armExtensionEncoder(
-  Encoders::EXTENSION_A,
-  Encoders::EXTENSION_B
-),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
   Solenoids::ARM_PISTON
@@ -24,11 +19,8 @@ armCompressor(
   COMPRESSOR,
   frc::PneumaticsModuleType::CTREPCM
 ) { //Constructor Body
-  StopCompressor();
   StartCompressor();
   ResetEncoders();
-  SetJointLimits(JointPositions::POS2);
-  SetExtensionLimits(ExtensionPositions::RETRACTED);
 }
 /* ---===#########################################===--- */
 
@@ -40,15 +32,6 @@ frc2::CommandPtr ArmSubsystem::ManualJointUp() {
 frc2::CommandPtr ArmSubsystem::ManualJointDown() {
   return this->Run(
     [this] {armJoint.Set(Speeds::JOINT_DOWNWARDS); });
-}
-
-frc2::CommandPtr ArmSubsystem::ManualExtend() {
-  return this->Run(
-    [this] {armExtension.Set(Speeds::EXTEND); });
-}
-frc2::CommandPtr ArmSubsystem::ManualRetract() {
-  return this->Run(
-    [this] {armExtension.Set(Speeds::RETRACT); });
 }
 
 frc2::CommandPtr ArmSubsystem::ManualGrabberUp() {
@@ -64,13 +47,20 @@ frc2::CommandPtr ArmSubsystem::ToggleGrabber() {
   return this->RunOnce(
     [this] {armGrabberPiston.Toggle(); });
 }
+
+frc2::CommandPtr ArmSubsystem::ToggleArmMode() {
+  return this->RunOnce([this] {
+    armMode == Constants::ArmMode::NORMAL ?
+    armMode = Constants::ArmMode::AUTO :
+    armMode = Constants::ArmMode::NORMAL; });
+}
 /* ---===#########################################===--- */
 
 /* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::PrintToDashboard() {
+  frc::SmartDashboard::PutBoolean("ArmMode = NORMAL", armMode == Constants::ArmMode::NORMAL);
   frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
   frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
-  frc::SmartDashboard::PutNumber("EXTENSION ENCODER: ",armExtensionDistance);
 }
 
 void ArmSubsystem::StartCompressor() {
@@ -100,13 +90,11 @@ void ArmSubsystem::Periodic() {
 void ArmSubsystem::ResetEncoders() {
   armJointEncoder.Reset();
   armGrabberEncoder.Reset();
-  armExtensionEncoder.Reset();
 }
 
 void ArmSubsystem::UpdateValues() {
   armJointDistance = armJointEncoder.GetDistance();
   armGrabberDistance = armGrabberEncoder.GetDistance();
-  armExtensionDistance = armExtensionEncoder.GetDistance();
 }
 /* ---===#########################################===--- */
 
@@ -123,91 +111,75 @@ frc2::CommandPtr ArmSubsystem::StopGrabber() {
   return this->RunOnce(
     [this] {armGrabber.Set(0.0); });
 }
-frc2::CommandPtr ArmSubsystem::StopExtension() {
-  return this->RunOnce(
-    [this] {armExtension.Set(0.0); });
-}
 /* ---===#########################################===--- */
 
 /* --=#[ LIMITS ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-frc2::CommandPtr ArmSubsystem::SetJointLimits(JointPositions pos) {
+/**
+ * @desc: Sets the arm limits / setpoints to later use in
+ * @see: MoveWithinLimits
+ * @param pos the armPosition to set the limits to. 
+ */
+frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
   return this->RunOnce(
-    [this,pos] {
+    [this,pos] { if (armMode == Constants::ArmMode::AUTO) {
       switch(pos) {
-      case JointPositions::POS1:
-        LOWER_JOINT_LIMIT = JointLimits::POS1MIN;
-        UPPER_JOINT_LIMIT = JointLimits::POS1MAX;
-        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS1MIN;
-        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS1MAX;
+      case ArmPositions::FOLDED:
+        jointSetPoint = JointLimits::FOLDED;
+        grabberSetPoint = GrabLimits::FOLDED;
         break;
-      case JointPositions::POS2:
-        LOWER_JOINT_LIMIT = JointLimits::POS2MIN;
-        UPPER_JOINT_LIMIT = JointLimits::POS2MAX;
-        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS2MIN;
-        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS2MAX;
+      case ArmPositions::OBJECT_PICKUP:
+        jointSetPoint = JointLimits::OBJECT_PICKUP;
+        grabberSetPoint = GrabLimits::OBJECT_PICKUP;
         break;
-      case JointPositions::POS3:
-        LOWER_JOINT_LIMIT = JointLimits::POS3MIN;
-        UPPER_JOINT_LIMIT = JointLimits::POS3MAX;
-        LOWER_GRABBER_LIMIT = GrabLimits::GRAB_POS3MIN;
-        UPPER_GRABBER_LIMIT = GrabLimits::GRAB_POS3MAX;
-      }
-    }
-  );
-}
-frc2::CommandPtr ArmSubsystem::SetExtensionLimits(ExtensionPositions pos) {
-  return this->RunOnce(
-    [this,pos] {
-      switch(pos) {
-      case ExtensionPositions::EXTENDED:
-        LOWER_EXTENSION_LIMIT = ExtensionLimits::EXTEND_MIN;
-        UPPER_EXTENSION_LIMIT = ExtensionLimits::EXTEND_MAX;
+      case ArmPositions::OBJECT_DROPOFF_MID:
+        jointSetPoint = JointLimits::OBJECT_DROPOFF_MID;
+        grabberSetPoint = GrabLimits::OBJECT_DROPOFF_MID;
         break;
-      case ExtensionPositions::RETRACTED:
-        LOWER_EXTENSION_LIMIT = ExtensionLimits::RETRACT_MIN;
-        UPPER_EXTENSION_LIMIT = ExtensionLimits::RETRACT_MAX;
-      }
+      case ArmPositions::OBJECT_DROPOFF_HIGH:
+        jointSetPoint = JointLimits::OBJECT_DROPOFF_HIGH;
+        grabberSetPoint = GrabLimits::OBJECT_DROPOFF_HIGH;
+      } }
     }
   );
 }
 
 /**
  * @desc: Provides a commandptr wrapper to keep the arm's components
- * within their respective limits. 
+ * within their respective limits.
  */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return this->Run( [this] {
+  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) { //check mode so that arm motors don't have multiple funcs setting them at once.
     MoveJointWithinLimits();
-    MoveExtensionWithinLimits();
-    MoveGrabberWithinLimits(); });
+    MoveGrabberWithinLimits();} });
 }
 
 void ArmSubsystem::MoveJointWithinLimits() {
   MoveWithinLimits(
-    &armJoint, armJointDistance,
-    LOWER_JOINT_LIMIT, UPPER_JOINT_LIMIT,
+    &armJoint, armJointDistance, jointSetPoint,
     Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
-  );
-}
-void ArmSubsystem::MoveExtensionWithinLimits() {
-  MoveWithinLimits(
-    &armExtension, armExtensionDistance,
-    LOWER_EXTENSION_LIMIT, UPPER_EXTENSION_LIMIT,
-    Speeds::EXTEND, Speeds::RETRACT
   );
 }
 void ArmSubsystem::MoveGrabberWithinLimits() {
   MoveWithinLimits(
-    &armGrabber, armGrabberDistance,
-    LOWER_GRABBER_LIMIT, UPPER_GRABBER_LIMIT, 
+    &armGrabber, armGrabberDistance, grabberSetPoint,
     Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
   );
 }
 
+/**
+ * @desc: Moves given motor to a setpoint given its current encoder distance
+ * @param motor the motor to move
+ * @param distance encoder value for that motor
+ * @param desiredPos the desired position/setpoint
+ * @param speedf upwards speed to use for the motor
+ * @param speedb downwards speed to use for the motor.
+ * 
+ * TODO: Learn PID Controller to possibly replace this method of moving the arm.
+ */
 void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance, 
-int min, int max, double speedf, double speedb) {
-  if ( min + 30 < distance && distance < max - 30 ) motor->Set(0.0);
-  else if ( distance < min )                        motor->Set(speedf);
-  else if ( distance > max )                        motor->Set(speedb);
+double desiredPos, double speedf, double speedb) {
+  if ( desiredPos == distance )         motor->Set(0.0);    //at desired position, don't move
+  else if ( distance < desiredPos - 50) motor->Set(speedf); //below desired position, move up
+  else if ( distance > desiredPos + 50) motor->Set(speedb); //above desired position, move down
 }
 /* ---===#########################################===--- */

@@ -15,18 +15,16 @@
 class DriveSubsystem : public frc2::SubsystemBase {
 public:
   DriveSubsystem();
-  ~DriveSubsystem() = default;
 
   void Periodic() override;
   void InitSendable(wpi::SendableBuilder& builder) override;
 
-  frc2::CommandPtr StopDrive();
   void Drive(double f, double r);
-
-  void AutoCorrect();
-  int DetermineNearestDirection();
-
+  frc2::CommandPtr StopDrive();
+  frc2::CommandPtr ToggleDriveMode();
 private:
+  //Either Normal or Precise. Determines speed.
+  Constants::DriveMode driveMode = Constants::DriveMode::NORMAL;
   WPI_TalonSRX m_frontLeft;
   WPI_TalonSRX m_backLeft;
   frc::MotorControllerGroup m_left;

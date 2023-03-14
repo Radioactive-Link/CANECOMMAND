@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 #include "subsystems/ArmSubsystem.hpp"
 
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -117,7 +121,7 @@ frc2::CommandPtr ArmSubsystem::StopGrabber() {
 /**
  * @desc: Sets the arm limits / setpoints to later use in
  * @see: MoveWithinLimits
- * @param pos the armPosition to set the limits to. 
+ * @param pos the armPosition to set the limits to.
  */
 frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
   return this->RunOnce(
@@ -173,10 +177,10 @@ void ArmSubsystem::MoveGrabberWithinLimits() {
  * @param desiredPos the desired position/setpoint
  * @param speedf upwards speed to use for the motor
  * @param speedb downwards speed to use for the motor.
- * 
+ *
  * TODO: Learn PID Controller to possibly replace this method of moving the arm.
  */
-void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance, 
+void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance,
 double desiredPos, double speedf, double speedb) {
   if ( desiredPos == distance )         motor->Set(0.0);    //at desired position, don't move
   else if ( distance < desiredPos - 50) motor->Set(speedf); //below desired position, move up

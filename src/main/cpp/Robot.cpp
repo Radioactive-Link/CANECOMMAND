@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 #include "Robot.hpp"
 
 #include <frc2/command/CommandScheduler.h>
@@ -11,7 +15,7 @@ void Robot::RobotInit() {}
  *
  * This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
- * 
+ *
  * !LINE 18 IS ESSENTIAL, DON'T CALL IT FROM ANYWHERE ELSE
  */
 void Robot::RobotPeriodic() {

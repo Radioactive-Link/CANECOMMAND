@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 #pragma once
 
 /**
@@ -76,29 +80,29 @@ namespace JointLimits {
   double const OBJECT_PICKUP = 1.0; //default until we figure out values
   double const OBJECT_DROPOFF_MID = 1.0;
   double const OBJECT_DROPOFF_HIGH = 1.0;
-} //namespace JointLimits
+}  // namespace JointLimits
 namespace GrabLimits {
   double const FOLDED = 0.0;
   double const OBJECT_PICKUP = 1.0;
   double const OBJECT_DROPOFF_MID = 1.0;
   double const OBJECT_DROPOFF_HIGH = 1.0;
-} //namespace GrabLimits
+}  // namespace GrabLimits
 
 namespace Speeds { //enums can't have doubles
   double const JOINT_UPWARDS = -1;
   double const JOINT_DOWNWARDS = 1;
   double const GRAB_UPWARDS = 0.8;
   double const GRAB_DOWNWARDS = -0.8;
-} // namespace Speeds
-} // namespace ArmConstants
+}  // namespace Speeds
+}  // namespace ArmConstants
 /* --===############################===-- */
 
-/* --=#[ DRIVETRAIN ]#=-- ~~~~~~~~~~~~~~~ */ 
+/* --=#[ DRIVETRAIN ]#=-- ~~~~~~~~~~~~~~~ */
 namespace DriveConstants {
 namespace Speeds {
  /* Nothing :) */
-} // namespace Speeds
-} // namespace DriveConstants
+}  // namespace Speeds
+}  // namespace DriveConstants
 /* --===############################===-- */
 
-} // namespace Constants
+}  // namespace Constants

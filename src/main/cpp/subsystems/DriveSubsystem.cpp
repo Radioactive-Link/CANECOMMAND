@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 #include "subsystems/DriveSubsystem.hpp"
 
 using namespace Constants;
@@ -21,7 +25,7 @@ void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
 }
 
-frc2::CommandPtr DriveSubsystem::StopDrive() { 
+frc2::CommandPtr DriveSubsystem::StopDrive() {
   return this->RunOnce(
     [this] {m_drive.ArcadeDrive(0.0,0.0); });
 }
@@ -29,19 +33,19 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
 /**
  * @desc: This is the default command for the DriveSubsystem.
  * moves with controller input in the arcade style.
- * @param f the controller's left joystick Y axis, 
- * moves drivetrain forwards and backwards 
+ * @param f the controller's left joystick Y axis,
+ * moves drivetrain forwards and backwards
  * @param r the controller's right joystick X axis,
  * turns drivetrain left and right.
  */
 void DriveSubsystem::Drive(double f, double r) {
-  driveMode == Constants::DriveMode::NORMAL ? 
+  driveMode == Constants::DriveMode::NORMAL ?
   m_drive.ArcadeDrive(f/1.3,r/1.3) : //NORMAL
   m_drive.ArcadeDrive(f/1.6,r/1.6);  //PRECISION
 }
 
 /**
- * @desc: Toggles between normal and precision (slow) modes for the drivetrain 
+ * @desc: Toggles between normal and precision (slow) modes for the drivetrain
  */
 frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
   return this->RunOnce([this] {

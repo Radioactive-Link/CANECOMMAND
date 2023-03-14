@@ -1,3 +1,7 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 #include "RobotContainer.hpp"
 
 #include <frc2/command/CommandScheduler.h>
@@ -17,7 +21,7 @@ RobotContainer::RobotContainer() {
   frc::SmartDashboard::PutData("DriveSubsystem", &m_drive);
   frc::SmartDashboard::PutData("ArmSubsystem", &m_arm);
 
-  /** 
+  /**
    * @desc: Configure the button bindings.
    * @note: If the arm does not have automatic positioning by next comp, replace
    * ConfigureArmBindings() with a call to ConfigureArmManualBindings() instead and
@@ -34,16 +38,16 @@ RobotContainer::RobotContainer() {
  * controller.button.condition(subsystem.func())
  * controller.button.condition(frc2::cmd::Run(<lambda>, {<subsystem required}))
  * @note: func MUST return a CommandPtr
- * For conditions & more info 
+ * For conditions & more info
  * @link: https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
  */
 void RobotContainer::ConfigureArmBindings() {
   /**
-   * @note: Following commands depend on the internal "ArmMode" state of the arm subsystem 
+   * @note: Following commands depend on the internal "ArmMode" state of the arm subsystem
    * The mode toggle switches between Auto and Normal modes, in Normal, these bindings will be
    * ignored "as there is no supported way to clear bindings"?
    * Default is Auto.
-   * For comp, the internal arm mode should not change. 
+   * For comp, the internal arm mode should not change.
    * Uncomment following line to test automatic mode.
    */
   // m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
@@ -69,8 +73,8 @@ void RobotContainer::ConfigureDriveBindings() {
   //Set default/fallback command on the m_drive subsystem.
   //Normal driving
   m_drive.SetDefaultCommand(std::move(frc2::cmd::Run(
-    [this] 
-      {m_drive.Drive(driveController.GetLeftY(), driveController.GetRightX());}, 
+    [this]
+      {m_drive.Drive(driveController.GetLeftY(), driveController.GetRightX());},
       {&m_drive} //requires m_drive subsystem
   )));
   //Toggle between normal and slow mode

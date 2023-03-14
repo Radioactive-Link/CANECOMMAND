@@ -14,6 +14,8 @@ RobotContainer::RobotContainer() {
   }
   //now display the dropdown with name "Auto Commands"
   frc::SmartDashboard::PutData("Auto Commands", &chooser);
+  frc::SmartDashboard::PutData("DriveSubsystem", &m_drive);
+  frc::SmartDashboard::PutData("ArmSubsystem", &m_arm);
 
   /** 
    * @desc: Configure the button bindings.

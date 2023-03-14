@@ -11,11 +11,11 @@ m_frontRight(MotorControllers::FRONT_RIGHT),
 m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
 m_drive(m_left,m_right) {
-  m_left.SetInverted(true);
+  m_left.SetInverted(true); //invert the left side of the drivetrain so that it moves properly.
 }
 
 void DriveSubsystem::Periodic() {
-  /* Nothing to do */
+  frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
 }
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
@@ -26,26 +26,26 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
     [this] {m_drive.ArcadeDrive(0.0,0.0); });
 }
 
+/**
+ * @desc: This is the default command for the DriveSubsystem.
+ * moves with controller input in the arcade style.
+ * @param f the controller's left joystick Y axis, 
+ * moves drivetrain forwards and backwards 
+ * @param r the controller's right joystick X axis,
+ * turns drivetrain left and right.
+ */
 void DriveSubsystem::Drive(double f, double r) {
-  m_drive.ArcadeDrive(f,r);
+  driveMode == Constants::DriveMode::NORMAL ? 
+  m_drive.ArcadeDrive(f/1.3,r/1.3) : //NORMAL
+  m_drive.ArcadeDrive(f/1.6,r/1.6);  //PRECISION
 }
 
 /**
- * @desc: Rotates the drivetrain to the nearest cardinal direction using navx gyro
- * Will probably be a toggle as constant correction could have odd behaviours
+ * @desc: Toggles between normal and precision (slow) modes for the drivetrain 
  */
-void DriveSubsystem::AutoCorrect() {
-  /**
-   * Here is some pseudocode.
-   */
-  //int angle = DetermineNearestDirection();
-  //double normal = GetController()->GetLeftY();
-  //double correction;
-  //if ( angle > 0 && angle < 45 ) correction = 0.2;
-  //else if... correction = ...;
-  //m_drive.ArcadeDrive(normal,correction);
-}
-
-int DriveSubsystem::DetermineNearestDirection() {
-  return 0;
+frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
+  return this->RunOnce([this] {
+    driveMode == Constants::DriveMode::NORMAL ?
+    driveMode = Constants::DriveMode::PRECISION :
+    driveMode = Constants::DriveMode::NORMAL; });
 }

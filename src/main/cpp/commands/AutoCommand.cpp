@@ -3,16 +3,16 @@
 frc2::CommandPtr Auto::BasicAutoCommand(DriveSubsystem* drive) {
   return frc2::cmd::Run([drive] {drive->Drive(0.5,0.0);})
     .WithTimeout(2_s)
-    .AndThen([drive] {drive->Drive(0.0,0.0);});
+    .AndThen(drive->StopDrive());
 }
 
 frc2::CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive) {
   return frc2::cmd::Run([drive] {drive->Drive(0.57,0.0);})
     .WithTimeout(2_s)
-    .AndThen([drive] {drive->Drive(0.0,0.0);});
+    .AndThen(drive->StopDrive());
   // return frc2::cmd::Run([drive] {drive->Drive(0.57,0.0);})
   //   .WithTimeout(3_s)
-  //   .AndThen([drive] {drive->Drive(-0.57,0.0);})
+  //   .AndThen([drive] {drive->Drive(-0.5,0.0);})
   //   .WithTimeout(2_s)
   //   .AndThen([drive] {drive->Drive(0.0,0.0);});
 }

@@ -29,7 +29,7 @@ using namespace Constants::ArmConstants;
  * called externally in a Command class.
  * 
  * @note: CommandPtr cannot be called directly, must be within a CommandPtr
- * library method.
+ * library method. Ex with a trigger: trigger.OnTrue(CommandPtr method)
  * 
  * @see: cpp/commands/AutoCommand.cpp, under AdvancedAutoCommand.
  * AdvancedAutoCommand calls StopJoint(), which is under this subsystem and
@@ -38,7 +38,6 @@ using namespace Constants::ArmConstants;
 class ArmSubsystem : public frc2::SubsystemBase {
 public:
   ArmSubsystem();
-  ~ArmSubsystem() = default;
 
   void Periodic() override;
   void InitSendable(wpi::SendableBuilder& builder) override;
@@ -56,24 +55,25 @@ public:
 
   frc2::CommandPtr ToggleGrabber();
 
-  frc2::CommandPtr SetJointLimits(JointPositions pos);
-  frc2::CommandPtr SetExtensionLimits(ExtensionPositions pos);
+  frc2::CommandPtr SetArmPosition(ArmPositions pos);
 
-  void MoveWithinLimits(WPI_TalonSRX* motor, int distance, int min, int max, double speedf, double speedb);
+  void MoveWithinLimits(WPI_TalonSRX* motor, int distance, double desiredPos, double speedf, double speedb);
   void MoveJointWithinLimits();
   void MoveExtensionWithinLimits();
   void MoveGrabberWithinLimits();
   frc2::CommandPtr MoveArmWithinLimits();
 
   //= Debug/Manual Control
+  frc2::CommandPtr ToggleArmMode();
   frc2::CommandPtr ManualJointUp();
   frc2::CommandPtr ManualJointDown();
   frc2::CommandPtr ManualExtend();
   frc2::CommandPtr ManualRetract();
   frc2::CommandPtr ManualGrabberUp();
   frc2::CommandPtr ManualGrabberDown();
-  
 private:
+  //Either normal or auto. For comp, change this to auto by default.
+  Constants::ArmMode armMode = Constants::ArmMode::NORMAL;
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;
   WPI_TalonSRX armExtension;
@@ -83,12 +83,9 @@ private:
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
 
-  double UPPER_JOINT_LIMIT;
-  double LOWER_JOINT_LIMIT;
-  double UPPER_GRABBER_LIMIT;
-  double LOWER_GRABBER_LIMIT;
-  double UPPER_EXTENSION_LIMIT;
-  double LOWER_EXTENSION_LIMIT;
+  double jointSetPoint;
+  double grabberSetPoint;
+  double extensionSetPoint;
 
   double armJointDistance;
   double armGrabberDistance;

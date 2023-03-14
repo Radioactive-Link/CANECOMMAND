@@ -9,10 +9,10 @@ void Robot::RobotInit() {}
  * this for items like diagnostics that you want to run during disabled,
  * autonomous, teleoperated and test.
  *
- * <p> This runs after the mode specific periodic functions, but before
+ * This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  * 
- * !LINE 18 IS ESSENTIAL, DON'T CALL IT FROM ANYWHERE ELSE 
+ * !LINE 18 IS ESSENTIAL, DON'T CALL IT FROM ANYWHERE ELSE
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
@@ -55,6 +55,13 @@ void Robot::TeleopInit() {
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {}
+
+/**
+ * Initialization code for test mode should go here.
+ */
+void Robot::TestInit() {
+  m_container.ConfigureArmManualBindings(); //we only want to include the manual bindings when testing.
+}
 
 /**
  * This function is called periodically during test mode.

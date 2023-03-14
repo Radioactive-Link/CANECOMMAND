@@ -19,6 +19,7 @@ class Robot : public TimedRobot {
   void AutonomousPeriodic() override;
   void TeleopInit() override;
   void TeleopPeriodic() override;
+  void TestInit() override;
   void TestPeriodic() override;
   void SimulationInit() override;
   void SimulationPeriodic() override;

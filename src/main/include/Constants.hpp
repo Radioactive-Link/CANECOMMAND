@@ -46,8 +46,8 @@ enum MotorControllers {
   FRONT_LEFT  = 12,
   BACK_LEFT,
   //= ARM
-  GRABBER     = 5,
-  JOINT       = 7,
+  GRABBER     = 6,
+  JOINT
 };
 
 enum Encoders {

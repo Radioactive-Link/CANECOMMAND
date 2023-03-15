@@ -6,15 +6,15 @@
 
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 ArmSubsystem::ArmSubsystem() :
+PIDSubsystem(frc2::PIDController{
+  ArmPID::kP,
+  ArmPID::kI,
+  ArmPID::kD
+}),
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
-armJointEncoder(
-  Encoders::JOINT_A,
-  Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
-  false,              //just an example incase we need to change them.
-  frc::Encoder::EncodingType::k4X
-),
-armGrabberEncoder(Encoders::GRABBER_ENCODER),
+armJointEncoder(Encoders::JOINT_A, Encoders::JOINT_B, true),
+armGrabberEncoder(Encoders::GRABBER_A, Encoders::GRABBER_B, true),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
   Solenoids::ARM_PISTON
@@ -87,6 +87,7 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
  * with whatever command requires the subsystem
  */
 void ArmSubsystem::Periodic() {
+  PIDSubsystem::Periodic();
   UpdateValues();
   PrintToDashboard();
 }
@@ -146,44 +147,19 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
     }
   );
 }
+/* ---===#########################################===--- */
 
-/**
- * @desc: Provides a commandptr wrapper to keep the arm's components
- * within their respective limits.
- */
-frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) { //check mode so that arm motors don't have multiple funcs setting them at once.
-    MoveJointWithinLimits();
-    MoveGrabberWithinLimits();} });
+/* --=#[ PID CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+double ArmSubsystem::GetMeasurement() {
+  return armJointEncoder.GetRate();
 }
 
-void ArmSubsystem::MoveJointWithinLimits() {
-  MoveWithinLimits(
-    &armJoint, armJointDistance, jointSetPoint,
-    Speeds::JOINT_UPWARDS, Speeds::JOINT_DOWNWARDS
-  );
-}
-void ArmSubsystem::MoveGrabberWithinLimits() {
-  MoveWithinLimits(
-    &armGrabber, armGrabberDistance, grabberSetPoint,
-    Speeds::GRAB_UPWARDS, Speeds::GRAB_DOWNWARDS
-  );
+void ArmSubsystem::UseOutput(double output, double setpoint) {
+  armJoint.SetVoltage(units::volt_t{output} +
+    armJointFeedforward.Calculate(/* something */));
 }
 
-/**
- * @desc: Moves given motor to a setpoint given its current encoder distance
- * @param motor the motor to move
- * @param distance encoder value for that motor
- * @param desiredPos the desired position/setpoint
- * @param speedf upwards speed to use for the motor
- * @param speedb downwards speed to use for the motor.
- *
- * TODO: Learn PID Controller to possibly replace this method of moving the arm.
- */
-void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance,
-double desiredPos, double speedf, double speedb) {
-  if ( desiredPos == distance )         motor->Set(0.0);    //at desired position, don't move
-  else if ( distance < desiredPos - 50) motor->Set(speedf); //below desired position, move up
-  else if ( distance > desiredPos + 50) motor->Set(speedb); //above desired position, move down
+bool ArmSubsystem::AtSetpoint() {
+  return false;
 }
 /* ---===#########################################===--- */

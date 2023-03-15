@@ -4,6 +4,11 @@
 
 #pragma once
 
+#include <numbers>
+
+#include <units/angle.h>
+#include <units/time.h>
+#include <units/voltage.h>
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants.  This should not be used for any other
@@ -18,7 +23,7 @@ namespace Constants {
 /**
  * @desc: Stuff not big enough to be own category
  */
-int constexpr COMPRESSOR = 0;
+int const COMPRESSOR = 0;
 
 enum Controllers {
   XBOX_DRIVE,
@@ -55,7 +60,8 @@ enum MotorControllers {
 };
 
 enum Encoders {
-  GRABBER_ENCODER,
+  GRABBER_A,
+  GRABBER_B,
   JOINT_A = 3,
   JOINT_B
 };
@@ -75,25 +81,39 @@ enum class ArmPositions {
   OBJECT_DROPOFF_MID,
   OBJECT_DROPOFF_HIGH
 };
+
+namespace ArmPID {
+int const EncoderCPS = 1024;
+//TODO: Measure wheel diameter for the pulley controlling the armJoint.
+double const wheelDiameterInches = 0.0;
+//We want distance per pulse to be an angle
+double const EncoderDistancePerPulse = 
+  (wheelDiameterInches / std::numbers::pi) / static_cast<double>(EncoderCPS);
+double const kP = 1.0;
+double const kI = 0.0;
+double const kD = 0.0;
+} // namespace armPID
+
 namespace JointLimits {
-  double const FOLDED = 0;
-  double const OBJECT_PICKUP = 1.0; //default until we figure out values
-  double const OBJECT_DROPOFF_MID = 1.0;
-  double const OBJECT_DROPOFF_HIGH = 1.0;
+double const FOLDED = 0;
+double const OBJECT_PICKUP = 1.0; //default until we figure out values
+double const OBJECT_DROPOFF_MID = 1.0;
+double const OBJECT_DROPOFF_HIGH = 1.0;
 }  // namespace JointLimits
 namespace GrabLimits {
-  double const FOLDED = 0.0;
-  double const OBJECT_PICKUP = 1.0;
-  double const OBJECT_DROPOFF_MID = 1.0;
-  double const OBJECT_DROPOFF_HIGH = 1.0;
+double const FOLDED = 0.0;
+double const OBJECT_PICKUP = 1.0;
+double const OBJECT_DROPOFF_MID = 1.0;
+double const OBJECT_DROPOFF_HIGH = 1.0;
 }  // namespace GrabLimits
 
-namespace Speeds { //enums can't have doubles
-  double const JOINT_UPWARDS = -1;
-  double const JOINT_DOWNWARDS = 1;
-  double const GRAB_UPWARDS = 0.8;
-  double const GRAB_DOWNWARDS = -0.8;
+namespace Speeds {
+double const JOINT_UPWARDS = -1;
+double const JOINT_DOWNWARDS = 1;
+double const GRAB_UPWARDS = 0.8;
+double const GRAB_DOWNWARDS = -0.8;
 }  // namespace Speeds
+
 }  // namespace ArmConstants
 /* --===############################===-- */
 

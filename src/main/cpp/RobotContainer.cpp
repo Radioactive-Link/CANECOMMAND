@@ -48,9 +48,7 @@ void RobotContainer::ConfigureArmBindings() {
    * ignored "as there is no supported way to clear bindings"?
    * Default is Auto.
    * For comp, the internal arm mode should not change.
-   * Uncomment following line to test automatic mode.
    */
-  // m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
   Start.OnTrue(m_arm.SetArmPosition(ArmPositions::FOLDED));
   xButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_PICKUP));
   yButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_MID));

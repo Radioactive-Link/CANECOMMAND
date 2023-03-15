@@ -25,13 +25,10 @@ armCompressor(
 ) { //Constructor Body
   StartCompressor();
   ResetEncoders();
-  lights.Set(true);
+  lights.Set(true); //On by default
 }
 /* ---===#########################################===--- */
-frc2::CommandPtr ArmSubsystem::ToggleLights() {
-  return this->RunOnce([this] {
-    lights.Toggle(); });
-}
+
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 frc2::CommandPtr ArmSubsystem::ManualJointUp() {
   return this->Run(
@@ -61,6 +58,14 @@ frc2::CommandPtr ArmSubsystem::ToggleArmMode() {
     armMode == Constants::ArmMode::NORMAL ?
     armMode = Constants::ArmMode::AUTO :
     armMode = Constants::ArmMode::NORMAL; });
+}
+
+/**
+ * @desc: Toggle the light strip.
+ */
+frc2::CommandPtr ArmSubsystem::ToggleLights() {
+  return this->RunOnce([this] {
+    lights.Toggle(); });
 }
 /* ---===#########################################===--- */
 

@@ -56,6 +56,7 @@ void RobotContainer::ConfigureArmBindings() {
   yButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_MID));
   bButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_HIGH));
   aButton.OnTrue(m_arm.ToggleGrabber());
+  LB.OnTrue(m_arm.ToggleLights());
 }
 
 void RobotContainer::ConfigureArmManualBindings() {

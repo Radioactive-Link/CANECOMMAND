@@ -64,6 +64,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void MoveGrabberWithinLimits();
   frc2::CommandPtr MoveArmWithinLimits();
 
+  frc2::CommandPtr ToggleLights();
   //= Debug/Manual Control
   frc2::CommandPtr ToggleArmMode();
   frc2::CommandPtr ManualJointUp();
@@ -78,6 +79,7 @@ private:
   frc::Encoder armJointEncoder;
   frc::Encoder armGrabberEncoder;
   frc::Solenoid armGrabberPiston;
+  frc::Solenoid lights;
   frc::Compressor armCompressor;
 
   double jointSetPoint;

@@ -14,15 +14,24 @@ armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
   Solenoids::ARM_PISTON
 ),
+lights(
+  1,
+  frc::PneumaticsModuleType::CTREPCM,
+  Solenoids::LIGHTS
+),
 armCompressor(
   COMPRESSOR,
   frc::PneumaticsModuleType::CTREPCM
 ) { //Constructor Body
   StartCompressor();
   ResetEncoders();
+  lights.Set(true);
 }
 /* ---===#########################################===--- */
-
+frc2::CommandPtr ArmSubsystem::ToggleLights() {
+  return this->RunOnce([this] {
+    lights.Toggle(); });
+}
 /* --=#[ DEBUG/MANUAL CONTROL ]#=-- ~~~~~~~~~~~~~~~~~~~~ */
 frc2::CommandPtr ArmSubsystem::ManualJointUp() {
   return this->Run(

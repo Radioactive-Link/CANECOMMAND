@@ -8,13 +8,8 @@
 ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
-armJointEncoder(
-  Encoders::JOINT_A,
-  Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
-  false,              //just an example incase we need to change them.
-  frc::Encoder::EncodingType::k4X
-),
-armGrabberEncoder(Encoders::GRABBER_ENCODER),
+armJointEncoder(Encoders::JOINT_A, Encoders::JOINT_B, true),
+armGrabberEncoder(Encoders::GRABBER_A, Encoders::GRABBER_B, true),
 armGrabberPiston(
   frc::PneumaticsModuleType::CTREPCM,
   Solenoids::ARM_PISTON

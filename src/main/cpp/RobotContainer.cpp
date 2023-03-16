@@ -8,8 +8,6 @@
 
 #include "commands/AutoCommand.hpp"
 
-//TODO: Figure out shuffleboard for a better gui
-
 RobotContainer::RobotContainer() {
   //!Initialize all of your commands and subsystems here
   //loop through autocommands, adding each to smartdashboard's dropdown.
@@ -18,6 +16,7 @@ RobotContainer::RobotContainer() {
   }
   //now display the dropdown with name "Auto Commands"
   frc::SmartDashboard::PutData("Auto Commands", &chooser);
+  //put subsystems to the dashboard.
   frc::SmartDashboard::PutData("DriveSubsystem", &m_drive);
   frc::SmartDashboard::PutData("ArmSubsystem", &m_arm);
 
@@ -79,9 +78,11 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
-  Start.WhileTrue(
-    frc2::cmd::Run(
-      [this] {m_drive.Balance(); }, {&m_drive}));
+  Start.WhileTrue(frc2::cmd::Run(
+    [this]
+      {m_drive.Balance();}, 
+      {&m_drive}
+  ));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

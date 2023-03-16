@@ -32,7 +32,6 @@ class RobotContainer {
   RobotContainer();
 
   frc2::CommandPtr GetAutonomousCommand();
-  void ConfigureArmManualBindings();
 
  private:
   frc2::CommandXboxController driveController{Constants::Controllers::XBOX_DRIVE};
@@ -43,12 +42,11 @@ class RobotContainer {
   frc2::Trigger bButton = driveController.B();
   frc2::Trigger LB      = driveController.LeftBumper();
   frc2::Trigger RB      = driveController.RightBumper();
-  frc2::Trigger LT      = driveController.LeftTrigger(0.8); //double threshold. 0.0 <-> 1.0
-  frc2::Trigger RT      = driveController.RightTrigger(0.8);//because the triggers use a range.
+  frc2::Trigger LT      = driveController.LeftTrigger(0.8);  //double threshold. 0.0 <-> 1.0
+  frc2::Trigger RT      = driveController.RightTrigger(0.8); //because the triggers use a range.
   frc2::Trigger LStick  = driveController.LeftStick();
   frc2::Trigger RStick  = driveController.RightStick();
   frc2::Trigger Start   = driveController.Start();
-  //I do not know if these will work...
   //Up is 0, angle increases clockwise.
   frc2::POVButton dpadUp{&driveController, 0};
   frc2::POVButton dpadRight{&driveController, 90};
@@ -69,4 +67,5 @@ class RobotContainer {
 
   void ConfigureArmBindings();
   void ConfigureDriveBindings();
+  void ConfigureArmManualBindings();
 };

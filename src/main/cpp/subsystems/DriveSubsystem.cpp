@@ -11,7 +11,6 @@
 using namespace Constants;
 using namespace Constants::DriveConstants;
 
-
 DriveSubsystem::DriveSubsystem() :
 m_frontLeft(MotorControllers::FRONT_LEFT),
 m_backLeft(MotorControllers::BACK_LEFT),
@@ -26,8 +25,7 @@ m_gyro(frc::SPI::Port::kMXP) {
 
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
-  frc::SmartDashboard::PutData("Gyro", &m_gyro);
-  frc::SmartDashboard::PutNumber("Gyro roll", m_gyro.GetRoll());
+  frc::SmartDashboard::PutNumber("Gyro Roll", m_gyro.GetRoll());
 }
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
@@ -42,9 +40,11 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
  * @desc: This is the default command for the DriveSubsystem.
  * moves with controller input in the arcade style.
  * @param f the controller's left joystick Y axis,
- * moves drivetrain forwards and backwards
+ * moves drivetrain forwards and backwards.
+ * Should be a range -1.0 <-> 1.0
  * @param r the controller's right joystick X axis,
  * turns drivetrain left and right.
+ * Should also be a range -1.0 <-> 1.0
  */
 void DriveSubsystem::Drive(double f, double r) {
   driveMode == Constants::DriveMode::NORMAL ?

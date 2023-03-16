@@ -51,7 +51,7 @@ void RobotContainer::ConfigureArmBindings() {
    * Uncomment following line to test automatic mode.
    */
   // m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
-  Start.OnTrue(m_arm.SetArmPosition(ArmPositions::FOLDED));
+  RStick.OnTrue(m_arm.SetArmPosition(ArmPositions::FOLDED));
   xButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_PICKUP));
   yButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_MID));
   bButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_HIGH));
@@ -79,6 +79,7 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
+  Start.OnTrue(m_drive.Balance());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

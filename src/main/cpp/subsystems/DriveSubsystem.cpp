@@ -4,8 +4,13 @@
 
 #include "subsystems/DriveSubsystem.hpp"
 
+#include <numbers>
+#include <frc/SPI.h>
+#include <frc/SerialPort.h>
+
 using namespace Constants;
 using namespace Constants::DriveConstants;
+
 
 DriveSubsystem::DriveSubsystem() :
 m_frontLeft(MotorControllers::FRONT_LEFT),
@@ -14,7 +19,8 @@ m_left(m_frontLeft,m_backLeft),
 m_frontRight(MotorControllers::FRONT_RIGHT),
 m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
-m_drive(m_left,m_right) {
+m_drive(m_left,m_right),
+m_gyro(frc::SPI::Port::kMXP) {
   m_left.SetInverted(true); //invert the left side of the drivetrain so that it moves properly.
 }
 
@@ -52,4 +58,9 @@ frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
     driveMode == Constants::DriveMode::NORMAL ?
     driveMode = Constants::DriveMode::PRECISION :
     driveMode = Constants::DriveMode::NORMAL; });
+}
+
+frc2::CommandPtr DriveSubsystem::Balance() {
+  return this->Run([this] {
+    m_drive.ArcadeDrive((m_gyro.GetRoll() * (std::numbers::pi / 180)), 0.0); });
 }

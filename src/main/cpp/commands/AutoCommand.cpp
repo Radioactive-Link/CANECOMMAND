@@ -20,7 +20,7 @@ frc2::CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive) {
     .WithTimeout(1_s)
     .AndThen([drive] {drive->Drive(-0.5,0.0);}) //drive back at half speed for 2 seconds
     .WithTimeout(2_s)
-    .AndThen(drive->StopDrive()); //stop driving
+    .AndThen(drive->Balance()); //stop driving
 }
 
 frc2::CommandPtr Auto::AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm) {

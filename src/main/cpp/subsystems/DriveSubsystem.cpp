@@ -26,6 +26,8 @@ m_gyro(frc::SPI::Port::kMXP) {
 
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
+  frc::SmartDashboard::PutData("Gyro", &m_gyro);
+  frc::SmartDashboard::PutNumber("Gyro roll", m_gyro.GetRoll());
 }
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
@@ -60,7 +62,6 @@ frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
     driveMode = Constants::DriveMode::NORMAL; });
 }
 
-frc2::CommandPtr DriveSubsystem::Balance() {
-  return this->Run([this] {
-    m_drive.ArcadeDrive((m_gyro.GetRoll() * (std::numbers::pi / 180)), 0.0); });
+void DriveSubsystem::Balance() {
+  m_drive.ArcadeDrive(sin(m_gyro.GetRoll() * (M_PI / 180)), 0.0, false);
 }

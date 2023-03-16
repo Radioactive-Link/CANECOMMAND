@@ -5,19 +5,20 @@
 #pragma once
 
 #include <numbers>
-#include <memory>
+#include "Constants.hpp"
 
+#include <memory>
+#include <stdexcept>
 #include <frc/SPI.h>
 #include <frc/SerialPort.h>
+#include "AHRS.h"
+#include "ctre/Phoenix.h"
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
-#include "ctre/Phoenix.h"
-#include "AHRS.h"
 
-#include "Constants.hpp"
 
 /**
  * @desc: Subsystem that handles all driving components.
@@ -25,7 +26,6 @@
 class DriveSubsystem : public frc2::SubsystemBase {
 public:
   DriveSubsystem();
-  virtual ~DriveSubsystem();
 
   void Periodic() override;
   void InitSendable(wpi::SendableBuilder& builder) override;
@@ -33,7 +33,7 @@ public:
   void Drive(double f, double r);
   frc2::CommandPtr StopDrive();
   frc2::CommandPtr ToggleDriveMode();
-  frc2::CommandPtr Balance();
+  void Balance();
 private:
   //Either Normal or Precise. Determines speed.
   Constants::DriveMode driveMode = Constants::DriveMode::NORMAL;

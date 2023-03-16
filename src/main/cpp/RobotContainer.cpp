@@ -79,7 +79,9 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
-  Start.OnTrue(m_drive.Balance());
+  Start.WhileTrue(
+    frc2::cmd::Run(
+      [this] {m_drive.Balance(); }, {&m_drive}));
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

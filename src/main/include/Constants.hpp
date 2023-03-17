@@ -95,8 +95,8 @@ double const OBJECT_DROPOFF_HIGH = 1.0;
 namespace Speeds { //enums can't have doubles
 double const JOINT_UPWARDS = -1;
 double const JOINT_DOWNWARDS = 1;
-double const GRAB_UPWARDS = 0.5;
-double const GRAB_DOWNWARDS = -0.5;
+double const GRAB_UPWARDS = -0.5;
+double const GRAB_DOWNWARDS = 0.5;
 }  // namespace Speeds
 }  // namespace ArmConstants
 /* --===############################===-- */

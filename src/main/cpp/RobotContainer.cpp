@@ -26,7 +26,7 @@ RobotContainer::RobotContainer() {
    * ConfigureArmBindings() with a call to ConfigureArmManualBindings() instead and
    * comment out the Rstick ArmMode toggle.
    */
-  ConfigureArmBindings();
+  // ConfigureArmBindings();
   ConfigureArmManualBindings();
   ConfigureDriveBindings();
 }
@@ -54,7 +54,6 @@ void RobotContainer::ConfigureArmBindings() {
   xButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_PICKUP));
   yButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_MID));
   bButton.OnTrue(m_arm.SetArmPosition(ArmPositions::OBJECT_DROPOFF_HIGH));
-  aButton.OnTrue(m_arm.ToggleGrabber());
 }
 
 void RobotContainer::ConfigureArmManualBindings() {
@@ -62,10 +61,11 @@ void RobotContainer::ConfigureArmManualBindings() {
    * @desc: Toggle between normal and auto arm modes.
    */
   // RStick.OnTrue(m_arm.ToggleArmMode());
-  dpadUp.WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
-  dpadDown.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
-  dpadLeft.WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
-  dpadRight.WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
+  RB.WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
+  LB.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
+  RT.WhileTrue(m_arm.ManualGrabberUp()).OnFalse(m_arm.StopGrabber());
+  LT.WhileTrue(m_arm.ManualGrabberDown()).OnFalse(m_arm.StopGrabber());
+  aButton.OnTrue(m_arm.ToggleGrabber());
 }
 
 void RobotContainer::ConfigureDriveBindings() {
@@ -78,6 +78,7 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
+  dpadDown.OnTrue(m_drive.ToggleLights());
   Start.WhileTrue(frc2::cmd::Run(
     [this]
       {m_drive.Balance();}, 

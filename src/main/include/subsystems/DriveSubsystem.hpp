@@ -32,8 +32,10 @@ public:
   void InitSendable(wpi::SendableBuilder& builder) override;
 
   void Drive(double f, double r);
+  void AutoDrive(double f, double r = 0.0);
   frc2::CommandPtr StopDrive();
   frc2::CommandPtr ToggleDriveMode();
+  frc2::CommandPtr ToggleLights();
   void Balance();
 private:
   //Either Normal or Precise. Determines speed.

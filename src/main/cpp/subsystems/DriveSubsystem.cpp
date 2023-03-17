@@ -19,7 +19,7 @@ m_frontRight(MotorControllers::FRONT_RIGHT),
 m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
 m_drive(m_left,m_right),
-m_gyro(frc::SPI::Port::kMXP) {
+m_gyro(frc::SPI::Port::kMXP),
 //int module (pcm), module type, int channel
 leftLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::LEFT_LIGHT),
 rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
@@ -61,6 +61,10 @@ void DriveSubsystem::Drive(double f, double r) {
   m_drive.ArcadeDrive(f/1.6,r/1.6);  //PRECISION
 }
 
+void DriveSubsystem::AutoDrive(double f, double r) {
+  m_drive.ArcadeDrive(f,r);
+}
+
 /**
  * @desc: Toggles between normal and precision (slow) modes for the drivetrain
  */
@@ -69,6 +73,12 @@ frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
     driveMode == Constants::DriveMode::NORMAL ?
     driveMode = Constants::DriveMode::PRECISION :
     driveMode = Constants::DriveMode::NORMAL; });
+}
+
+frc2::CommandPtr DriveSubsystem::ToggleLights() {
+  return this->RunOnce([this] {
+    leftLights.Toggle();
+    rightLights.Toggle(); });
 }
 
 void DriveSubsystem::Balance() {

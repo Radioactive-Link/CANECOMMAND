@@ -15,14 +15,8 @@ armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
 armJointEncoder(Encoders::JOINT_A, Encoders::JOINT_B, true),
 armGrabberEncoder(Encoders::GRABBER_A, Encoders::GRABBER_B, true),
-armGrabberPiston(
-  frc::PneumaticsModuleType::CTREPCM,
-  Solenoids::ARM_PISTON
-),
-armCompressor(
-  COMPRESSOR,
-  frc::PneumaticsModuleType::CTREPCM
-) { //Constructor Body
+armGrabberPiston(frc::PneumaticsModuleType::CTREPCM, Solenoids::ARM_PISTON),
+armCompressor(COMPRESSOR, frc::PneumaticsModuleType::CTREPCM) { //Constructor Body
   StartCompressor();
   ResetEncoders();
 }
@@ -129,19 +123,19 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
     [this,pos] { if (armMode == Constants::ArmMode::AUTO) {
       switch(pos) {
       case ArmPositions::FOLDED:
-        jointSetPoint = JointLimits::FOLDED;
+        m_controller.SetSetpoint(JointLimits::FOLDED);
         grabberSetPoint = GrabLimits::FOLDED;
         break;
       case ArmPositions::OBJECT_PICKUP:
-        jointSetPoint = JointLimits::OBJECT_PICKUP;
+        m_controller.SetSetpoint(JointLimits::OBJECT_PICKUP);
         grabberSetPoint = GrabLimits::OBJECT_PICKUP;
         break;
       case ArmPositions::OBJECT_DROPOFF_MID:
-        jointSetPoint = JointLimits::OBJECT_DROPOFF_MID;
+        m_controller.SetSetpoint(JointLimits::OBJECT_DROPOFF_MID);
         grabberSetPoint = GrabLimits::OBJECT_DROPOFF_MID;
         break;
       case ArmPositions::OBJECT_DROPOFF_HIGH:
-        jointSetPoint = JointLimits::OBJECT_DROPOFF_HIGH;
+        m_controller.SetSetpoint(JointLimits::OBJECT_DROPOFF_HIGH);
         grabberSetPoint = GrabLimits::OBJECT_DROPOFF_HIGH;
       } }
     }
@@ -155,11 +149,11 @@ double ArmSubsystem::GetMeasurement() {
 }
 
 void ArmSubsystem::UseOutput(double output, double setpoint) {
-  armJoint.SetVoltage(units::volt_t{output} +
-    armJointFeedforward.Calculate(/* something */));
+  armJoint.Set(output);
 }
 
 bool ArmSubsystem::AtSetpoint() {
-  return false;
+  //m_controller is a member of the PID, which is why you don't see it defined anywhere
+  return m_controller.AtSetpoint();
 }
 /* ---===#########################################===--- */

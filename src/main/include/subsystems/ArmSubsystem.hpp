@@ -55,7 +55,6 @@ class ArmSubsystem : public frc2::PIDSubsystem {
   //= PID
   bool AtSetpoint();
 
-
   void ResetEncoders();
   void UpdateValues();
   void PrintToDashboard();

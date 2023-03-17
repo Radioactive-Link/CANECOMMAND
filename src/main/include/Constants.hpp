@@ -24,9 +24,11 @@ enum Controllers {
   XBOX_DRIVE,
   XBOX_ARM
 };
+
 enum Solenoids {
   ARM_PISTON,
-  LIGHTS = 3
+  LEFT_LIGHT = 2,
+  RIGHT_LIGHT,
 };
 
 enum class DriveMode {
@@ -37,7 +39,7 @@ enum class DriveMode {
 /**
  * @note: this, ideally will not be togglable.
  * Currently has no use as manual bindings are added on top of the
- * automatic bindings in testing mode.
+ * automatic bindings.
  */
 enum class ArmMode {
   NORMAL,

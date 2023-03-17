@@ -48,7 +48,6 @@ class RobotContainer {
   frc2::Trigger LStick  = driveController.LeftStick();
   frc2::Trigger RStick  = driveController.RightStick();
   frc2::Trigger Start   = driveController.Start();
-  //I do not know if these will work...
   //Up is 0, angle increases clockwise.
   frc2::POVButton dpadUp{&driveController, 0};
   frc2::POVButton dpadRight{&driveController, 90};

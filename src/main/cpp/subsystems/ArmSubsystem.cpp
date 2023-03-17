@@ -10,22 +10,11 @@ armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
 armJointEncoder(Encoders::JOINT_A, Encoders::JOINT_B, true),
 armGrabberEncoder(Encoders::GRABBER_A, Encoders::GRABBER_B, true),
-armGrabberPiston(
-  frc::PneumaticsModuleType::CTREPCM,
-  Solenoids::ARM_PISTON
-),
-lights(
-  1,
-  frc::PneumaticsModuleType::CTREPCM,
-  Solenoids::LIGHTS
-),
-armCompressor(
-  COMPRESSOR,
-  frc::PneumaticsModuleType::CTREPCM
-) { //Constructor Body
+armGrabberPiston(frc::PneumaticsModuleType::CTREPCM, Solenoids::ARM_PISTON),
+armCompressor(COMPRESSOR, frc::PneumaticsModuleType::CTREPCM) {
+  //Constructor Body
   StartCompressor();
   ResetEncoders();
-  lights.Set(true); //On by default
 }
 /* ---===#########################################===--- */
 
@@ -60,20 +49,13 @@ frc2::CommandPtr ArmSubsystem::ToggleArmMode() {
     armMode = Constants::ArmMode::NORMAL; });
 }
 
-/**
- * @desc: Toggle the light strip.
- */
-frc2::CommandPtr ArmSubsystem::ToggleLights() {
-  return this->RunOnce([this] {
-    lights.Toggle(); });
-}
 /* ---===#########################################===--- */
 
 /* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::PrintToDashboard() {
   frc::SmartDashboard::PutBoolean("ArmMode = NORMAL", armMode == Constants::ArmMode::NORMAL);
-  frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
-  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
+  frc::SmartDashboard::PutNumber("JOINT ENCODER: ", armJointDistance);
+  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ", armGrabberDistance);
 }
 
 void ArmSubsystem::StartCompressor() {
@@ -161,7 +143,8 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
  * within their respective limits.
  */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) { //check mode so that arm motors don't have multiple funcs setting them at once.
+  //check mode so that arm motors don't have multiple funcs setting them at once.
+  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) {
     MoveJointWithinLimits();
     MoveGrabberWithinLimits();} });
 }

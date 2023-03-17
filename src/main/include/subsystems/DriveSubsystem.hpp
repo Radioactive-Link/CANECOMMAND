@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/Solenoid.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -36,5 +37,8 @@ private:
   WPI_TalonSRX m_backRight;
   frc::MotorControllerGroup m_right;
   frc::DifferentialDrive m_drive;
-  //TODO: Add gyro variable for navx
+  //because the light strip is power through the PCM, we use the solenoid class to interact with it.
+  //setting lights to true (lights.Set(true)) will turn them on.
+  frc::Solenoid leftLights;
+  frc::Solenoid rightLights;
 };

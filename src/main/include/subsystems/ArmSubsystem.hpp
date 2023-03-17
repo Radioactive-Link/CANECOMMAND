@@ -56,7 +56,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr StopGrabber();
 
   frc2::CommandPtr ToggleGrabber();
-  frc2::CommandPtr ToggleLights();
 
   frc2::CommandPtr SetArmPosition(ArmPositions pos);
 
@@ -79,9 +78,6 @@ private:
   frc::Encoder armJointEncoder;
   frc::Encoder armGrabberEncoder;
   frc::Solenoid armGrabberPiston;
-  //because the light strip is power through the PCM, we use the solenoid class to interact with it.
-  //setting lights to true (lights.Set(true)) will turn them on.
-  frc::Solenoid lights;
   frc::Compressor armCompressor;
 
   double jointSetPoint;

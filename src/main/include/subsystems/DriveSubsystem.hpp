@@ -4,6 +4,15 @@
 
 #pragma once
 
+#include <numbers>
+#include "Constants.hpp"
+
+#include <memory>
+#include <stdexcept>
+#include <frc/SPI.h>
+#include <frc/SerialPort.h>
+#include "AHRS.h"
+#include "ctre/Phoenix.h"
 #include <frc/Solenoid.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
@@ -11,8 +20,6 @@
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
 
-#include "Constants.hpp"
-#include "ctre/Phoenix.h"
 
 /**
  * @desc: Subsystem that handles all driving components.
@@ -27,6 +34,7 @@ public:
   void Drive(double f, double r);
   frc2::CommandPtr StopDrive();
   frc2::CommandPtr ToggleDriveMode();
+  void Balance();
 private:
   //Either Normal or Precise. Determines speed.
   Constants::DriveMode driveMode = Constants::DriveMode::NORMAL;
@@ -37,6 +45,7 @@ private:
   WPI_TalonSRX m_backRight;
   frc::MotorControllerGroup m_right;
   frc::DifferentialDrive m_drive;
+  AHRS m_gyro;
   //because the light strip is power through the PCM, we use the solenoid class to interact with it.
   //setting lights to true (lights.Set(true)) will turn them on.
   frc::Solenoid leftLights;

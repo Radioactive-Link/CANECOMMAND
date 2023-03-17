@@ -4,6 +4,10 @@
 
 #include "subsystems/DriveSubsystem.hpp"
 
+#include <numbers>
+#include <frc/SPI.h>
+#include <frc/SerialPort.h>
+
 using namespace Constants;
 using namespace Constants::DriveConstants;
 
@@ -15,6 +19,7 @@ m_frontRight(MotorControllers::FRONT_RIGHT),
 m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
 m_drive(m_left,m_right),
+m_gyro(frc::SPI::Port::kMXP) {
 //int module (pcm), module type, int channel
 leftLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::LEFT_LIGHT),
 rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
@@ -29,6 +34,7 @@ rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
  */
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
+  frc::SmartDashboard::PutNumber("Gyro Roll", m_gyro.GetRoll());
 }
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
@@ -43,9 +49,11 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
  * @desc: This is the default command for the DriveSubsystem.
  * moves with controller input in the arcade style.
  * @param f the controller's left joystick Y axis,
- * moves drivetrain forwards and backwards
+ * moves drivetrain forwards and backwards.
+ * Should be a range -1.0 <-> 1.0
  * @param r the controller's right joystick X axis,
  * turns drivetrain left and right.
+ * Should also be a range -1.0 <-> 1.0
  */
 void DriveSubsystem::Drive(double f, double r) {
   driveMode == Constants::DriveMode::NORMAL ?
@@ -61,4 +69,8 @@ frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
     driveMode == Constants::DriveMode::NORMAL ?
     driveMode = Constants::DriveMode::PRECISION :
     driveMode = Constants::DriveMode::NORMAL; });
+}
+
+void DriveSubsystem::Balance() {
+  m_drive.ArcadeDrive(sin(m_gyro.GetRoll() * (M_PI / 180)), 0.0, false);
 }

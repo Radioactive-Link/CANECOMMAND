@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <frc/AnalogEncoder.h>
 #include <frc/Compressor.h>
 #include <frc/Encoder.h>
 #include <frc/Solenoid.h>
@@ -77,7 +76,7 @@ private:
   WPI_TalonSRX armJoint;
   WPI_TalonSRX armGrabber;
   frc::Encoder armJointEncoder;
-  frc::AnalogEncoder armGrabberEncoder;
+  frc::Encoder armGrabberEncoder;
   frc::Solenoid armGrabberPiston;
   frc::Compressor armCompressor;
 

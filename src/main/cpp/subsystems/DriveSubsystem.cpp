@@ -20,9 +20,18 @@ m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
 m_drive(m_left,m_right),
 m_gyro(frc::SPI::Port::kMXP) {
+//int module (pcm), module type, int channel
+leftLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::LEFT_LIGHT),
+rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
   m_left.SetInverted(true); //invert the left side of the drivetrain so that it moves properly.
+  leftLights.Set(true); //Lights are on by default.
+  rightLights.Set(true);
 }
 
+/**
+ * @desc: Runs periodically (20_ms), should not interfere
+ * with whatever command requires the subsystem
+ */
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
   frc::SmartDashboard::PutNumber("Gyro Roll", m_gyro.GetRoll());

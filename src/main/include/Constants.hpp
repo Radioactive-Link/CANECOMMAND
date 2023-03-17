@@ -18,14 +18,17 @@ namespace Constants {
 /**
  * @desc: Stuff not big enough to be own category
  */
-int constexpr COMPRESSOR = 0;
+int constexpr COMPRESSOR = 1;
 
 enum Controllers {
   XBOX_DRIVE,
   XBOX_ARM
 };
+
 enum Solenoids {
-  ARM_PISTON
+  ARM_PISTON,
+  LEFT_LIGHT = 2,
+  RIGHT_LIGHT,
 };
 
 enum class DriveMode {
@@ -36,7 +39,7 @@ enum class DriveMode {
 /**
  * @note: this, ideally will not be togglable.
  * Currently has no use as manual bindings are added on top of the
- * automatic bindings in testing mode.
+ * automatic bindings.
  */
 enum class ArmMode {
   NORMAL,
@@ -55,7 +58,8 @@ enum MotorControllers {
 };
 
 enum Encoders {
-  GRABBER_ENCODER,
+  GRABBER_A,
+  GRABBER_B,
   JOINT_A = 3,
   JOINT_B
 };
@@ -76,23 +80,23 @@ enum class ArmPositions {
   OBJECT_DROPOFF_HIGH
 };
 namespace JointLimits {
-  double const FOLDED = 0;
-  double const OBJECT_PICKUP = 1.0; //default until we figure out values
-  double const OBJECT_DROPOFF_MID = 1.0;
-  double const OBJECT_DROPOFF_HIGH = 1.0;
+double const FOLDED = 0;
+double const OBJECT_PICKUP = 1.0; //default until we figure out values
+double const OBJECT_DROPOFF_MID = 1.0;
+double const OBJECT_DROPOFF_HIGH = 1.0;
 }  // namespace JointLimits
 namespace GrabLimits {
-  double const FOLDED = 0.0;
-  double const OBJECT_PICKUP = 1.0;
-  double const OBJECT_DROPOFF_MID = 1.0;
-  double const OBJECT_DROPOFF_HIGH = 1.0;
+double const FOLDED = 0.0;
+double const OBJECT_PICKUP = 1.0;
+double const OBJECT_DROPOFF_MID = 1.0;
+double const OBJECT_DROPOFF_HIGH = 1.0;
 }  // namespace GrabLimits
 
 namespace Speeds { //enums can't have doubles
-  double const JOINT_UPWARDS = -1;
-  double const JOINT_DOWNWARDS = 1;
-  double const GRAB_UPWARDS = 0.8;
-  double const GRAB_DOWNWARDS = -0.8;
+double const JOINT_UPWARDS = -1;
+double const JOINT_DOWNWARDS = 1;
+double const GRAB_UPWARDS = 0.5;
+double const GRAB_DOWNWARDS = -0.5;
 }  // namespace Speeds
 }  // namespace ArmConstants
 /* --===############################===-- */

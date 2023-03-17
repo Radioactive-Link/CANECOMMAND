@@ -8,21 +8,11 @@
 ArmSubsystem::ArmSubsystem() :
 armJoint(MotorControllers::JOINT),
 armGrabber(MotorControllers::GRABBER),
-armJointEncoder(
-  Encoders::JOINT_A,
-  Encoders::JOINT_B,  //Next two options are the defaults, not neccesary to specify.
-  false,              //just an example incase we need to change them.
-  frc::Encoder::EncodingType::k4X
-),
-armGrabberEncoder(Encoders::GRABBER_ENCODER),
-armGrabberPiston(
-  frc::PneumaticsModuleType::CTREPCM,
-  Solenoids::ARM_PISTON
-),
-armCompressor(
-  COMPRESSOR,
-  frc::PneumaticsModuleType::CTREPCM
-) { //Constructor Body
+armJointEncoder(Encoders::JOINT_A, Encoders::JOINT_B, true),
+armGrabberEncoder(Encoders::GRABBER_A, Encoders::GRABBER_B, true),
+armGrabberPiston(frc::PneumaticsModuleType::CTREPCM, Solenoids::ARM_PISTON),
+armCompressor(COMPRESSOR, frc::PneumaticsModuleType::CTREPCM) {
+  //Constructor Body
   StartCompressor();
   ResetEncoders();
 }
@@ -58,13 +48,14 @@ frc2::CommandPtr ArmSubsystem::ToggleArmMode() {
     armMode = Constants::ArmMode::AUTO :
     armMode = Constants::ArmMode::NORMAL; });
 }
+
 /* ---===#########################################===--- */
 
 /* --=#[ UTILITY ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 void ArmSubsystem::PrintToDashboard() {
   frc::SmartDashboard::PutBoolean("ArmMode = NORMAL", armMode == Constants::ArmMode::NORMAL);
-  frc::SmartDashboard::PutNumber("JOINT ENCODER: ",armJointDistance);
-  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ",armGrabberDistance);
+  frc::SmartDashboard::PutNumber("JOINT ENCODER: ", armJointDistance);
+  frc::SmartDashboard::PutNumber("GRABBER ENCODER: ", armGrabberDistance);
 }
 
 void ArmSubsystem::StartCompressor() {
@@ -152,7 +143,8 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
  * within their respective limits.
  */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
-  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) { //check mode so that arm motors don't have multiple funcs setting them at once.
+  //check mode so that arm motors don't have multiple funcs setting them at once.
+  return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) {
     MoveJointWithinLimits();
     MoveGrabberWithinLimits();} });
 }

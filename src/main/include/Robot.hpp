@@ -3,13 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-//cpp
+
 #include <optional>
 
-//wpi/vendordeps
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
-//User
+
 #include "RobotContainer.hpp"
 
 using namespace frc;

@@ -13,6 +13,7 @@
 #include <frc/SerialPort.h>
 #include "AHRS.h"
 #include "ctre/Phoenix.h"
+#include <frc/Solenoid.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -45,4 +46,8 @@ private:
   frc::MotorControllerGroup m_right;
   frc::DifferentialDrive m_drive;
   AHRS m_gyro;
+  //because the light strip is power through the PCM, we use the solenoid class to interact with it.
+  //setting lights to true (lights.Set(true)) will turn them on.
+  frc::Solenoid leftLights;
+  frc::Solenoid rightLights;
 };

@@ -6,13 +6,20 @@
 
 frc2::CommandPtr Auto::BasicAutoCommand(DriveSubsystem* drive) {
   return frc2::cmd::Sequence(
-    frc2::cmd::Run([drive] {drive->AutoDrive(0.5,0.0);}).WithTimeout(2_s),
+    frc2::cmd::Run([drive] {drive->AutoDrive(-0.5,0.0);}).WithTimeout(3_s),
     drive->StopDrive());
 }
 
 frc2::CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive, LightSubsystem* lights) {
   return frc2::cmd::Sequence(
-    frc2::cmd::Run([drive] {drive->AutoDrive(-0.5,0.0);}, {drive}).WithTimeout(2_s), //WithTimeout should end the first command
+    frc2::cmd::Run([drive] {drive->AutoDrive(-0.7,0.0);}, {drive}).WithTimeout(2_s), //WithTimeout should end the first command
+    frc2::cmd::Run([drive] {drive->Balance();}, {drive}));
+}
+
+frc2::CommandPtr Auto::AutoBalancePastStationCommand(DriveSubsystem* drive) {
+  return frc2::cmd::Sequence(
+    frc2::cmd::Run([drive] {drive->AutoDrive(-0.7,0.0);}, {drive}).WithTimeout(3_s),
+    frc2::cmd::Run([drive] {drive->AutoDrive(0.7,0.0);}, {drive}).WithTimeout(2_s),
     frc2::cmd::Run([drive] {drive->Balance();}, {drive}));
 }
 

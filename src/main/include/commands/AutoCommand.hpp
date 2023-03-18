@@ -14,22 +14,30 @@
 #include "subsystems/LightSubsystem.hpp"
 
 /**
- * @desc: Static factory for autonomous command
+ * @brief Static factory for autonomous command
  * Put auto code definitions here
  */
 namespace Auto {
+
 /**
- * @desc: Default Auto that just moves forwards
+ * @brief Default Auto that just moves forwards
 */
 frc2::CommandPtr BasicAutoCommand(DriveSubsystem* drive);
 
 /**
- * @desc: Auto command that balances the robot by moving forwards
+ * @brief Auto command that balances the robot by moving forwards
  */
 frc2::CommandPtr AutoBalanceCommand(DriveSubsystem* drive, LightSubsystem* lights);
 
 /**
- * @desc: Advanced Auto that moves and uses the Arm
+ * @brief Auto command that moves past the charging station and then moves back onto the
+ * station and balances. 
+ */
+frc2::CommandPtr AutoBalancePastStationCommand(DriveSubsystem* drive);
+
+/**
+ * @brief Advanced Auto that moves and uses the Arm
 */
 frc2::CommandPtr AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm);
+
 }  // namespace Auto

@@ -22,7 +22,8 @@
 #include "subsystems/LightSubsystem.hpp"
 
 /**
- * This class is where the bulk of the robot should be declared.  Since
+ * @brief Container to declare all subsystems and their command bindings.
+ * @details This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
  * actually be handled in the {@link Robot} periodic methods (other than the
  * scheduler calls).  Instead, the structure of the robot (including subsystems,
@@ -30,8 +31,21 @@
  */
 class RobotContainer {
  public:
+  /**
+   * @brief place to call declare all button bindings (usually by calling subfunctions)
+   * @see ConfigureDriveBindings()
+   * @note func MUST return a CommandPtr
+   * @example Trigger.SomeCondition(Some command);
+   * @example driveController.X().OnTrue(m_drive.Drive(1.0,0.0));
+   * @link https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
+   * for more information
+   */
   RobotContainer();
 
+  /**
+   * @brief Used to get the autonomous command selected on the dashboard
+   * @return The autonomous command to run. 
+   */
   frc2::CommandPtr GetAutonomousCommand();
 
  private:
@@ -59,6 +73,7 @@ class RobotContainer {
   std::vector<std::string> const autoCommands = {
     "Basic",
     "Balance",
+    "Balance Past Station",
     "Advanced"
   };
 
@@ -67,7 +82,18 @@ class RobotContainer {
   DriveSubsystem m_drive;
   LightSubsystem m_lights;
 
+  /**
+   * @brief used to declare the arm's AUTO mode bindings
+   */
   void ConfigureArmBindings();
+
+  /**
+   * @brief used to declare the drivetrains bindings  
+   */
   void ConfigureDriveBindings();
+
+  /**
+   * @brief used to declare the arm's NORMAL mode bindings
+   */
   void ConfigureArmManualBindings();
 };

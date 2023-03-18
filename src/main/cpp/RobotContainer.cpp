@@ -9,8 +9,8 @@
 #include "commands/AutoCommand.hpp"
 
 RobotContainer::RobotContainer() {
-  //!Initialize all of your commands and subsystems here
   //loop through autocommands, adding each to smartdashboard's dropdown.
+  chooser.SetDefaultOption(autoCommands.front(), autoCommands.front());
   for (std::string autoCommand : autoCommands) {
     chooser.AddOption(autoCommand,autoCommand);
   }
@@ -20,29 +20,17 @@ RobotContainer::RobotContainer() {
   frc::SmartDashboard::PutData("DriveSubsystem", &m_drive);
   frc::SmartDashboard::PutData("ArmSubsystem", &m_arm);
 
-  /**
-   * @desc: Configure the button bindings.
-   * @note: If the arm does not have automatic positioning by next comp, replace
-   * ConfigureArmBindings() with a call to ConfigureArmManualBindings() instead and
-   * comment out the Rstick ArmMode toggle.
-   */
+  //following line is commented out because the arm currently does not have an auto mode.
+  //This means that there is no use in having bindings to change the arm's position based
+  //on the encoder values
   // ConfigureArmBindings();
   ConfigureArmManualBindings();
   ConfigureDriveBindings();
 }
 
-/**
- * Configure your trigger bindings for the arm here
- * @example:
- * controller.button.condition(subsystem.func())
- * controller.button.condition(frc2::cmd::Run(<lambda>, {<subsystem required}))
- * @note: func MUST return a CommandPtr
- * For conditions & more info
- * @link: https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
- */
 void RobotContainer::ConfigureArmBindings() {
   /**
-   * @note: Following commands depend on the internal "ArmMode" state of the arm subsystem
+   * @note Following commands depend on the internal "ArmMode" state of the arm subsystem
    * The mode toggle switches between Auto and Normal modes, in Normal, these bindings will be
    * ignored "as there is no supported way to clear bindings"?
    * Default is Auto.
@@ -91,6 +79,9 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   }
   if (selected == "Advanced") {
     return Auto::AdvancedAutoCommand(&m_drive, &m_arm);
+  }
+  if (selected == "Balance Past Station") {
+    return Auto::AutoBalancePastStationCommand(&m_drive);
   }
   //Default: "Basic"
   return Auto::BasicAutoCommand(&m_drive);

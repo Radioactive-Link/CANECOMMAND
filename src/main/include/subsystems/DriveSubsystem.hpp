@@ -13,7 +13,6 @@
 #include <frc/SerialPort.h>
 #include "AHRS.h"
 #include "ctre/Phoenix.h"
-#include <frc/Solenoid.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -60,8 +59,6 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   frc2::CommandPtr ToggleDriveMode();
 
-  frc2::CommandPtr ToggleLights();
-
   /**
    * @brief uses the gyro to balance the drivetrain using the gyro's roll
    * @note due to how the navX is mounted, what is normally pitch is now roll.
@@ -83,9 +80,4 @@ class DriveSubsystem : public frc2::SubsystemBase {
   frc::DifferentialDrive m_drive;
   //navX gyro. Mounted on the roboRIO
   AHRS m_gyro;
-
-  //because the light strip is power through the PCM, we use the solenoid class to interact with it.
-  //setting lights to true (lights.Set(true)) will turn them on.
-  frc::Solenoid leftLights;
-  frc::Solenoid rightLights;
 };

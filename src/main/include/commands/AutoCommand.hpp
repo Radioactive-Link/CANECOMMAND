@@ -11,6 +11,7 @@
 
 #include "subsystems/ArmSubsystem.hpp"
 #include "subsystems/DriveSubsystem.hpp"
+#include "subsystems/LightSubsystem.hpp"
 
 /**
  * @brief Static factory for autonomous command
@@ -26,7 +27,7 @@ frc2::CommandPtr BasicAutoCommand(DriveSubsystem* drive);
 /**
  * @brief Auto command that balances the robot by moving forwards
  */
-frc2::CommandPtr AutoBalanceCommand(DriveSubsystem* drive);
+frc2::CommandPtr AutoBalanceCommand(DriveSubsystem* drive, LightSubsystem* lights);
 
 /**
  * @brief Auto command that moves past the charging station and then moves back onto the

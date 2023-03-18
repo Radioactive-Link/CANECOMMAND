@@ -66,18 +66,16 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
-  dpadDown.OnTrue(m_drive.ToggleLights());
-  Start.WhileTrue(frc2::cmd::Run(
-    [this]
-      {m_drive.Balance();}, 
-      {&m_drive}
-  ));
+  Start.WhileTrue(frc2::cmd::Parallel( //run these at the same time.
+    frc2::cmd::Run([this] {m_drive.Balance();}, {&m_drive}),
+    m_lights.StrobeLights()
+  )).OnFalse(m_lights.ResetLights());
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   std::string selected = chooser.GetSelected(); //returns selected option from the shuffleboard/smartdashboard dropdown
   if (selected == "Balance") {
-    return Auto::AutoBalanceCommand(&m_drive);
+    return Auto::AutoBalanceCommand(&m_drive, &m_lights);
   }
   if (selected == "Advanced") {
     return Auto::AdvancedAutoCommand(&m_drive, &m_arm);

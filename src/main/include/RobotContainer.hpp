@@ -19,6 +19,7 @@
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
 #include "subsystems/DriveSubsystem.hpp"
+#include "subsystems/LightSubsystem.hpp"
 
 /**
  * @brief Container to declare all subsystems and their command bindings.
@@ -79,6 +80,7 @@ class RobotContainer {
   //The robot's subsystems are defined here.
   ArmSubsystem m_arm;
   DriveSubsystem m_drive;
+  LightSubsystem m_lights;
 
   /**
    * @brief used to declare the arm's AUTO mode bindings

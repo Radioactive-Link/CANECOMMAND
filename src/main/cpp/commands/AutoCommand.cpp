@@ -16,6 +16,13 @@ frc2::CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive) {
     frc2::cmd::Run([drive] {drive->Balance();}, {drive}));
 }
 
+frc2::CommandPtr Auto::AutoBalancePastStationCommand(DriveSubsystem* drive) {
+  return frc2::cmd::Sequence(
+    frc2::cmd::Run([drive] {drive->AutoDrive(-0.7,0.0);}, {drive}).WithTimeout(3_s),
+    frc2::cmd::Run([drive] {drive->AutoDrive(0.7,0.0);}, {drive}).WithTimeout(2_s),
+    frc2::cmd::Run([drive] {drive->Balance();}, {drive}));
+}
+
 frc2::CommandPtr Auto::AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm) {
   return frc2::cmd::Sequence(
     frc2::cmd::RunOnce([drive, arm] {

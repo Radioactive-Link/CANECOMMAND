@@ -10,6 +10,7 @@
 
 RobotContainer::RobotContainer() {
   //loop through autocommands, adding each to smartdashboard's dropdown.
+  chooser.SetDefaultOption(autoCommands.front(), autoCommands.front());
   for (std::string autoCommand : autoCommands) {
     chooser.AddOption(autoCommand,autoCommand);
   }
@@ -80,6 +81,9 @@ frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   }
   if (selected == "Advanced") {
     return Auto::AdvancedAutoCommand(&m_drive, &m_arm);
+  }
+  if (selected == "Balance Past Station") {
+    return Auto::AutoBalancePastStationCommand(&m_drive);
   }
   //Default: "Basic"
   return Auto::BasicAutoCommand(&m_drive);

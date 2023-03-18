@@ -28,6 +28,12 @@ frc2::CommandPtr BasicAutoCommand(DriveSubsystem* drive);
 frc2::CommandPtr AutoBalanceCommand(DriveSubsystem* drive);
 
 /**
+ * @brief Auto command that moves past the charging station and then moves back onto the
+ * station and balances. 
+ */
+frc2::CommandPtr AutoBalancePastStationCommand(DriveSubsystem* drive);
+
+/**
  * @desc: Advanced Auto that moves and uses the Arm
 */
 frc2::CommandPtr AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm);

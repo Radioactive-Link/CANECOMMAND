@@ -72,6 +72,7 @@ class RobotContainer {
   std::vector<std::string> const autoCommands = {
     "Basic",
     "Balance",
+    "Balance Past Station",
     "Advanced"
   };
 

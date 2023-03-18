@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "subsystems/ArmSubsystem.hpp"
 
 /* --=#[ CONSTRUCTOR ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -73,10 +69,6 @@ void ArmSubsystem::InitSendable(wpi::SendableBuilder& builder) {
   // )
 }
 
-/**
- * @desc: Runs periodically (20_ms), should not interfere
- * with whatever command requires the subsystem
- */
 void ArmSubsystem::Periodic() {
   UpdateValues();
   PrintToDashboard();
@@ -109,11 +101,6 @@ frc2::CommandPtr ArmSubsystem::StopGrabber() {
 /* ---===#########################################===--- */
 
 /* --=#[ LIMITS ]#=-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/**
- * @desc: Sets the arm limits / setpoints to later use in
- * @see: MoveWithinLimits
- * @param pos the armPosition to set the limits to.
- */
 frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
   return this->RunOnce(
     [this,pos] { if (armMode == Constants::ArmMode::AUTO) {
@@ -138,10 +125,6 @@ frc2::CommandPtr ArmSubsystem::SetArmPosition(ArmPositions pos) {
   );
 }
 
-/**
- * @desc: Provides a commandptr wrapper to keep the arm's components
- * within their respective limits.
- */
 frc2::CommandPtr ArmSubsystem::MoveArmWithinLimits() {
   //check mode so that arm motors don't have multiple funcs setting them at once.
   return this->Run([this] { if ( armMode == Constants::ArmMode::AUTO ) {
@@ -162,16 +145,6 @@ void ArmSubsystem::MoveGrabberWithinLimits() {
   );
 }
 
-/**
- * @desc: Moves given motor to a setpoint given its current encoder distance
- * @param motor the motor to move
- * @param distance encoder value for that motor
- * @param desiredPos the desired position/setpoint
- * @param speedf upwards speed to use for the motor
- * @param speedb downwards speed to use for the motor.
- *
- * TODO: Learn PID Controller to possibly replace this method of moving the arm.
- */
 void ArmSubsystem::MoveWithinLimits(WPI_TalonSRX* motor, int distance,
 double desiredPos, double speedf, double speedb) {
   if ( desiredPos == distance )         motor->Set(0.0);    //at desired position, don't move

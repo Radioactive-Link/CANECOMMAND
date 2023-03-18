@@ -28,10 +28,6 @@ rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
   rightLights.Set(true);
 }
 
-/**
- * @desc: Runs periodically (20_ms), should not interfere
- * with whatever command requires the subsystem
- */
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutBoolean("DriveMode = NORMAL", driveMode == Constants::DriveMode::NORMAL);
   frc::SmartDashboard::PutNumber("Gyro Roll", m_gyro.GetRoll());
@@ -45,16 +41,6 @@ frc2::CommandPtr DriveSubsystem::StopDrive() {
     [this] {m_drive.ArcadeDrive(0.0,0.0); });
 }
 
-/**
- * @desc: This is the default command for the DriveSubsystem.
- * moves with controller input in the arcade style.
- * @param f the controller's left joystick Y axis,
- * moves drivetrain forwards and backwards.
- * Should be a range -1.0 <-> 1.0
- * @param r the controller's right joystick X axis,
- * turns drivetrain left and right.
- * Should also be a range -1.0 <-> 1.0
- */
 void DriveSubsystem::Drive(double f, double r) {
   driveMode == Constants::DriveMode::NORMAL ?
   m_drive.ArcadeDrive(f/1.3,r/1.3) : //NORMAL
@@ -65,9 +51,6 @@ void DriveSubsystem::AutoDrive(double f, double r) {
   m_drive.ArcadeDrive(f,r);
 }
 
-/**
- * @desc: Toggles between normal and precision (slow) modes for the drivetrain
- */
 frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
   return this->RunOnce([this] {
     driveMode == Constants::DriveMode::NORMAL ?

@@ -19,13 +19,8 @@ m_frontRight(MotorControllers::FRONT_RIGHT),
 m_backRight(MotorControllers::BACK_RIGHT),
 m_right(m_frontRight,m_backRight),
 m_drive(m_left,m_right),
-m_gyro(frc::SPI::Port::kMXP),
-//int module (pcm), module type, int channel
-leftLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::LEFT_LIGHT),
-rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
+m_gyro(frc::SPI::Port::kMXP) {
   m_left.SetInverted(true); //invert the left side of the drivetrain so that it moves properly.
-  leftLights.Set(true); //Lights are on by default.
-  rightLights.Set(true);
 }
 
 /**
@@ -73,12 +68,6 @@ frc2::CommandPtr DriveSubsystem::ToggleDriveMode() {
     driveMode == Constants::DriveMode::NORMAL ?
     driveMode = Constants::DriveMode::PRECISION :
     driveMode = Constants::DriveMode::NORMAL; });
-}
-
-frc2::CommandPtr DriveSubsystem::ToggleLights() {
-  return this->RunOnce([this] {
-    leftLights.Toggle();
-    rightLights.Toggle(); });
 }
 
 void DriveSubsystem::Balance() {

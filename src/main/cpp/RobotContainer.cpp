@@ -78,11 +78,9 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
-  dpadDown.OnTrue(m_drive.ToggleLights());
-  Start.WhileTrue(frc2::cmd::Run(
-    [this]
-      {m_drive.Balance();}, 
-      {&m_drive}
+  Start.WhileTrue(frc2::cmd::Parallel( //run these at the same time.
+    frc2::cmd::Run([this] {m_drive.Balance();}, {&m_drive}),
+    m_lights.StrobeLights()
   ));
 }
 

@@ -19,7 +19,7 @@
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
 #include "subsystems/DriveSubsystem.hpp"
-#include "subsystems/Lights.hpp"
+#include "subsystems/LightSubsystem.hpp"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -65,7 +65,7 @@ class RobotContainer {
   //The robot's subsystems are defined here.
   ArmSubsystem m_arm;
   DriveSubsystem m_drive;
-  Lights m_lights;
+  LightSubsystem m_lights;
 
   void ConfigureArmBindings();
   void ConfigureDriveBindings();

@@ -1,6 +1,6 @@
-#include "subsystems/Lights.hpp"
+#include "subsystems/LightSubsystem.hpp"
 
-Lights::Lights() :
+LightSubsystem::LightSubsystem() :
 //int module (pcm), module type, int channel
 leftLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::LEFT_LIGHT),
 rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
@@ -10,25 +10,24 @@ rightLights(1, frc::PneumaticsModuleType::CTREPCM, Solenoids::RIGHT_LIGHT) {
 }
 
 
-frc2::CommandPtr Lights::StrobeLights() {
+frc2::CommandPtr LightSubsystem::StrobeLights() {
   //Offset one side to be the opposite of the other.
   //Assumed that BOTH are either true or false
-  //As "ResetLights" is called at the end of this command, this is an acceptable assumption
   rightLights.Set(false);
+  //Repeating Sequence repeats the following 2 commands over and over until interrupted/done.
   return frc2::cmd::RepeatingSequence(
     //Toggle both, inversing them. Left on, right off becomes left off, right on.
     ToggleLights(),
-    frc2::cmd::Wait(0.1_s)) //end of repeating sequence. Wait 1/10th of a second so lights arent toggled every ~20ms.
-    .AsProxy().AndThen(ResetLights()); //When command ends or is interrupted, ResetLights should be called
+    frc2::cmd::Wait(0.1_s)); //Wait 1/10th of a second so lights arent toggled every ~20ms.
 }
 
-frc2::CommandPtr Lights::ResetLights() {
+frc2::CommandPtr LightSubsystem::ResetLights() {
   return this->RunOnce([this] {
     leftLights.Set(true); //set both lights to true, turning them both on.
     rightLights.Set(true); });
 }
 
-frc2::CommandPtr Lights::ToggleLights() {
+frc2::CommandPtr LightSubsystem::ToggleLights() {
   return this->RunOnce([this] {
     rightLights.Toggle(); //toggle both lights between on and off.
     leftLights.Toggle(); });

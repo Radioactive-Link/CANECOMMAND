@@ -1,27 +1,23 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
-
-#include <frc/smartdashboard/SendableChooser.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc2/command/CommandPtr.h>
-#include <frc2/command/Commands.h>
-#include <frc2/command/button/CommandXboxController.h>
-#include <frc2/command/button/POVButton.h>
-#include <frc2/command/button/Trigger.h>
-#include <units/time.h>
 
 #include <string>
 #include <vector>
 
+#include <frc2/command/CommandPtr.h>
+#include <frc2/command/button/Trigger.h>
+#include <frc2/command/button/POVButton.h>
+#include <frc2/command/button/CommandXboxController.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/smartdashboard/SendableChooser.h>
+
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
 #include "subsystems/DriveSubsystem.hpp"
+#include "subsystems/LightSubsystem.hpp"
 
 /**
- * This class is where the bulk of the robot should be declared.  Since
+ * @brief Container to declare all subsystems and their command bindings.
+ * @details This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
  * actually be handled in the {@link Robot} periodic methods (other than the
  * scheduler calls).  Instead, the structure of the robot (including subsystems,
@@ -29,8 +25,21 @@
  */
 class RobotContainer {
  public:
+  /**
+   * @brief place to call declare all button bindings (usually by calling subfunctions)
+   * @see ConfigureDriveBindings()
+   * @note func MUST return a CommandPtr
+   * @example Trigger.SomeCondition(Some command);
+   * @example driveController.X().OnTrue(m_drive.Drive(1.0,0.0));
+   * @link https://github.wpilib.org/allwpilib/docs/release/cpp/classfrc2_1_1_trigger.html
+   * for more information
+   */
   RobotContainer();
 
+  /**
+   * @brief Used to get the autonomous command selected on the dashboard
+   * @return The autonomous command to run. 
+   */
   frc2::CommandPtr GetAutonomousCommand();
 
  private:
@@ -47,6 +56,7 @@ class RobotContainer {
   frc2::Trigger LStick  = driveController.LeftStick();
   frc2::Trigger RStick  = driveController.RightStick();
   frc2::Trigger Start   = driveController.Start();
+  //a POV is another name for the dpad on the controller
   //Up is 0, angle increases clockwise.
   frc2::POVButton dpadUp{&driveController, 0};
   frc2::POVButton dpadRight{&driveController, 90};
@@ -58,14 +68,28 @@ class RobotContainer {
   std::vector<std::string> const autoCommands = {
     "Basic",
     "Balance",
+    "Balance Past Station",
     "Advanced"
   };
 
   //The robot's subsystems are defined here.
   ArmSubsystem m_arm;
   DriveSubsystem m_drive;
+  LightSubsystem m_lights;
 
+  /**
+   * @brief used to declare the arm's AUTO mode bindings
+   */
   void ConfigureArmBindings();
-  void ConfigureDriveBindings();
+
+  /**
+   * @brief used to declare the arm's NORMAL mode bindings
+   */
   void ConfigureArmManualBindings();
+
+  /**
+   * @brief used to declare the drivetrain's bindings  
+   */
+  void ConfigureDriveBindings();
+
 };

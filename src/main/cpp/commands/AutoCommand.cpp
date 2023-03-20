@@ -1,24 +1,38 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "commands/AutoCommand.hpp"
 
-frc2::CommandPtr Auto::BasicAutoCommand(DriveSubsystem* drive) {
-  return frc2::cmd::Sequence(
-    frc2::cmd::Run([drive] {drive->AutoDrive(0.5,0.0);}).WithTimeout(2_s),
+using namespace frc2;
+
+/**
+ * !IMPORTANT: For some reason, negative speed results in the robot driving forwards.
+ * @note This applies to ALL autonomous commands. 
+ */
+
+CommandPtr Auto::BasicAutoCommand(DriveSubsystem* drive) {
+  return cmd::Sequence(
+    cmd::Run([drive] {drive->AutoDrive(-0.5,0.0);}).WithTimeout(3_s),
     drive->StopDrive());
 }
 
-frc2::CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive) {
-  return frc2::cmd::Sequence(
-    frc2::cmd::Run([drive] {drive->AutoDrive(-0.5,0.0);}, {drive}).WithTimeout(2_s), //WithTimeout should end the first command
-    frc2::cmd::Run([drive] {drive->Balance();}, {drive}));
+CommandPtr Auto::AutoBalanceCommand(DriveSubsystem* drive, LightSubsystem* lights) {
+  return cmd::Sequence(
+    cmd::Run([drive] {drive->AutoDrive(-0.74,0.0);}, {drive}).WithTimeout(2_s), //drive forwards @ 74% speed for 2s
+    cmd::Parallel( //run these commands at the same time
+      cmd::Run([drive] {drive->Balance();}, {drive}), //Balance
+      cmd::Sequence(
+        lights->StrobeLights().WithTimeout(5_s), //Strobe lights for 5s
+        lights->ResetLights() ))); //Then turn them both on
 }
 
-frc2::CommandPtr Auto::AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm) {
-  return frc2::cmd::Sequence(
-    frc2::cmd::RunOnce([drive, arm] {
+CommandPtr Auto::AutoBalancePastStationCommand(DriveSubsystem* drive) {
+  return cmd::Sequence(
+    cmd::Run([drive] {drive->AutoDrive(-0.7,0.0);}, {drive}).WithTimeout(3_s),
+    cmd::Run([drive] {drive->AutoDrive(0.7,0.0);}, {drive}).WithTimeout(2_s),
+    cmd::Run([drive] {drive->Balance();}, {drive}));
+}
+
+CommandPtr Auto::AdvancedAutoCommand(DriveSubsystem* drive, ArmSubsystem* arm) {
+  return cmd::Sequence(
+    cmd::RunOnce([drive, arm] {
       /* Main Body */
     }, {drive,arm}), //requires drive & arm subsystems
 

@@ -1,24 +1,15 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
-#include <frc/Compressor.h>
 #include <frc/Encoder.h>
 #include <frc/Solenoid.h>
-#include <frc/Timer.h>
-#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/Compressor.h>
 #include <frc2/command/CommandPtr.h>
-#include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
-#include <units/time.h>
 #include <wpi/sendable/SendableBuilder.h>
-
-#include <iostream>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include "ctre/Phoenix.h"
 
 #include "Constants.hpp"
-#include "ctre/Phoenix.h"
 
 using namespace Constants;
 using namespace Constants::ArmConstants;

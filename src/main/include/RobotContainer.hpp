@@ -1,16 +1,14 @@
 #pragma once
 
-#include <frc/smartdashboard/SendableChooser.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc2/command/CommandPtr.h>
-#include <frc2/command/Commands.h>
-#include <frc2/command/button/CommandXboxController.h>
-#include <frc2/command/button/POVButton.h>
-#include <frc2/command/button/Trigger.h>
-#include <units/time.h>
-
 #include <string>
 #include <vector>
+
+#include <frc2/command/CommandPtr.h>
+#include <frc2/command/button/Trigger.h>
+#include <frc2/command/button/POVButton.h>
+#include <frc2/command/button/CommandXboxController.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 #include "Constants.hpp"
 #include "subsystems/ArmSubsystem.hpp"
@@ -88,7 +86,7 @@ class RobotContainer {
    * @brief used to declare the arm's NORMAL mode bindings
    */
   void ConfigureArmManualBindings();
-  
+
   /**
    * @brief used to declare the drivetrain's bindings  
    */

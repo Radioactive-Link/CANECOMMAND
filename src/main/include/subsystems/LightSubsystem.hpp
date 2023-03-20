@@ -1,9 +1,9 @@
 #pragma once
 
 #include <frc/Solenoid.h>
+#include <frc2/command/Commands.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
-#include <frc2/command/Commands.h>
 
 #include "Constants.hpp"
 using namespace Constants;
@@ -33,8 +33,8 @@ class LightSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr ToggleLights();
 
  private:
-  //because the light strip is power through the PCM, we use the solenoid class to interact with it.
-  //setting lights to true will turn them on.
+  //because the light strip is powered through the PCM, we use the solenoid class to interact with it.
+  //setting the lights to true will turn them on.
   frc::Solenoid leftLights;
   frc::Solenoid rightLights;
 };

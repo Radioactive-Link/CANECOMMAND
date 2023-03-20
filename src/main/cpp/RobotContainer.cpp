@@ -1,7 +1,5 @@
 #include "RobotContainer.hpp"
 
-#include <frc2/command/CommandScheduler.h>
-
 #include "commands/AutoCommand.hpp"
 
 RobotContainer::RobotContainer() {

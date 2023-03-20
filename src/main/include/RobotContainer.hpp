@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
 #include <frc/smartdashboard/SendableChooser.h>
@@ -62,6 +58,7 @@ class RobotContainer {
   frc2::Trigger LStick  = driveController.LeftStick();
   frc2::Trigger RStick  = driveController.RightStick();
   frc2::Trigger Start   = driveController.Start();
+  //a POV is another name for the dpad on the controller
   //Up is 0, angle increases clockwise.
   frc2::POVButton dpadUp{&driveController, 0};
   frc2::POVButton dpadRight{&driveController, 90};
@@ -88,12 +85,13 @@ class RobotContainer {
   void ConfigureArmBindings();
 
   /**
-   * @brief used to declare the drivetrains bindings  
-   */
-  void ConfigureDriveBindings();
-
-  /**
    * @brief used to declare the arm's NORMAL mode bindings
    */
   void ConfigureArmManualBindings();
+  
+  /**
+   * @brief used to declare the drivetrain's bindings  
+   */
+  void ConfigureDriveBindings();
+
 };

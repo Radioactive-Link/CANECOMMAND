@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
 #include <numbers>
@@ -43,7 +39,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   void Drive(double f, double r);
 
   /**
-   * @brief Unscaled drive for autonomous. 
+   * @brief Unscaled drive for autonomous.
    */
   void AutoDrive(double f, double r = 0.0);
 

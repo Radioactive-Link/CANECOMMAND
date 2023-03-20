@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #include "RobotContainer.hpp"
 
 #include <frc2/command/CommandScheduler.h>
@@ -35,6 +31,7 @@ void RobotContainer::ConfigureArmBindings() {
    * ignored "as there is no supported way to clear bindings"?
    * Default is Auto.
    * For comp, the internal arm mode should not change.
+   * @see ConfigureArmManualBindings where the arm mode toggle is commented out
    * Uncomment following line to test automatic mode.
    */
   // m_arm.SetDefaultCommand(std::move(m_arm.MoveArmWithinLimits()));
@@ -45,9 +42,6 @@ void RobotContainer::ConfigureArmBindings() {
 }
 
 void RobotContainer::ConfigureArmManualBindings() {
-  /**
-   * @desc: Toggle between normal and auto arm modes.
-   */
   // RStick.OnTrue(m_arm.ToggleArmMode());
   RB.WhileTrue(m_arm.ManualJointUp()).OnFalse(m_arm.StopJoint());
   LB.WhileTrue(m_arm.ManualJointDown()).OnFalse(m_arm.StopJoint());
@@ -66,6 +60,7 @@ void RobotContainer::ConfigureDriveBindings() {
   )));
   //Toggle between normal and slow mode
   LStick.OnTrue(m_drive.ToggleDriveMode());
+  //Balance and strobe lights, resetting them (turning them both on) when start is let go
   Start.WhileTrue(frc2::cmd::Parallel( //run these at the same time.
     frc2::cmd::Run([this] {m_drive.Balance();}, {&m_drive}),
     m_lights.StrobeLights()

@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 #pragma once
 
 /**
@@ -16,8 +12,9 @@
 namespace Constants {
 /* --=#[ MISC ]#=-- ~~~~~~~~~~~~~~~~~~~~~ */
 /**
- * @desc: Stuff not big enough to be own category
+ * @brief Stuff not big enough to be own category
  */
+
 int constexpr COMPRESSOR = 1;
 
 enum Controllers {
@@ -37,7 +34,7 @@ enum class DriveMode {
 };
 
 /**
- * @note: this, ideally will not be togglable.
+ * @note this, ideally will not be togglable.
  * Currently has no use as manual bindings are added on top of the
  * automatic bindings.
  */
@@ -69,9 +66,11 @@ enum Encoders {
 /* --=#[ ARM ]#=-- ~~~~~~~~~~~~~~~~~~~~~~ */
 namespace ArmConstants {
 /**
- * Enum classes are type-safe, useful for params.
- * Seen in ArmSubsystem limit/position-setting functions.
- * !As such, they can't be used to set int or double values.
+ * @note Enum classes are type-safe, useful for params.
+ * As such, they can't be used to set int or double values.
+ * @example enum Example { X }; Example::X is equal to 0 and Example::X
+ * @example enum class Example { X }; Example::X is not equal to 0, only Example::X
+ * @see ArmSubsystem limit/position-setting functions.
 */
 enum class ArmPositions {
   FOLDED,
